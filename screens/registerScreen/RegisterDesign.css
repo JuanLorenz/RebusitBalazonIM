@@ -1,0 +1,99 @@
+    /* RESET */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Archivo Black", sans-serif;
+    }
+
+    /* BACKGROUND */
+    body {
+        height: 100vh;
+        background: url('/images/backgroundGlobal.png') no-repeat center center/cover;
+    }
+
+    /* OVERLAY */
+    .overlay {
+        height: 100%;
+        width: 100%;
+        background: rgba(168, 57, 57, 0.55);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
+
+    /* BACK BUTTON (TOP LEFT FIXED) */
+    .back-btn {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        width: 55px;
+        cursor: pointer;
+        transition: 0.2s ease;
+    }
+
+    .back-btn:hover {
+        transform: scale(1.1);
+    }
+
+    /* CONTAINER */
+    .container {
+        text-align: center;
+        color: white;
+    }
+
+    /* LOGO */
+    .logo {
+        width: 200px;
+    }
+
+    /* TEXT */
+    h1 {
+        text-shadow: 2px 2px 4px black;
+        font-size: 32px;
+        letter-spacing: 2px;
+    }
+
+    h2 {
+        font-size: 16px;
+        text-shadow: 2px 2px 4px black;
+        margin-bottom: 15px;
+    }
+
+    /* INPUTS */
+    .input-group {
+        margin: 10px 0;
+    }
+
+    input {
+        width: 250px;
+        padding: 10px;
+        border-radius: 20px;
+        border: none;
+        outline: none;
+        text-align: center;
+        background: #900101;
+        color: white;
+    }
+
+    input::placeholder {
+        color: #fff;
+    }
+
+    /* BUTTON */
+    .register-btn {
+        margin-top: 15px;
+        padding: 10px 30px;
+        border: none;
+        border-radius: 20px;
+        background: #ffa600;
+        color: #7a0000;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.2s ease;
+    }
+
+    .register-btn:hover {
+        background: #ffd000;
+    }
