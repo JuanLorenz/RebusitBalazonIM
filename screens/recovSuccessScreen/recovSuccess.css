@@ -1,0 +1,79 @@
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Archivo Black", sans-serif;
+}
+
+/* BACKGROUND */
+body {
+    height: 100vh;
+    background: url('/images/backgroundGlobal.png') no-repeat center center/cover;
+}
+
+/* OVERLAY */
+.overlay {
+    height: 100%;
+    width: 100%;
+    background: rgba(168, 57, 57, 0.55);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+/* BACK BUTTON */
+.back-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 55px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.back-btn:hover {
+    transform: scale(1.1);
+}
+
+/* CONTAINER */
+.container {
+    text-align: center;
+    color: white;
+}
+
+/* LOGO */
+.logo {
+    width: 180px;
+    margin-bottom: 10px;
+}
+
+/* TITLE */
+h1 {
+    text-shadow: 2px 2px 4px black;
+    font-size: 32px;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+}
+
+/* MESSAGE CARD */
+.message-card {
+    background: rgba(100, 10, 10, 0.9);
+    border-radius: 12px;
+    padding: 25px 35px;
+    max-width: 420px;
+    margin: 0 auto;
+    line-height: 2;
+    font-size: 15px;
+    text-shadow: 1px 1px 3px black;
+}
+
+.message-card p {
+    margin: 0;
+}
+
+.message-card .divider {
+    margin: 8px 0;
+    font-size: 15px;
+}

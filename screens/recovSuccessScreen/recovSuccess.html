@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WildSTAR - Account Recovery</title>
+
+    <link rel="stylesheet" href="recovSuccess.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="overlay">
+
+        <!-- Back button -->
+        <img src="/images/back.png" alt="Back" class="back-btn" onclick="goBack()">
+
+        <div class="container">
+
+            <!-- Logo -->
+            <img src="/images/wildStarLogo.png" alt="Wildcats Logo" class="logo">
+
+            <!-- Title -->
+            <h1>ACCOUNT RECOVERY</h1>
+
+            <!-- Message Card -->
+            <div class="message-card">
+                <p>A recovery email has been sent to</p>
+                <p id="maskedEmail">j**************.r*****@c**.e**</p>
+
+                <p class="divider">and</p>
+
+                <p>A message has been sent to</p>
+                <p id="maskedPhone">+63 096* **** ***</p>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function goBack() {
+            window.location.href = "/screens/forgotPassScreen/ForgotPass.html";
+        }
+    </script>
+
+</body>
+</html>
