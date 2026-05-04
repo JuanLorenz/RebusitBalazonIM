@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WildSTAR Login</title>
+
+    <!-- Link external CSS -->
+    <link rel="stylesheet" href="LoginDesign.css">
+
+    <!--Link to Archivo Black Font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="overlay">
+        <div class="container">
+
+            <!-- Logo -->
+            <img src="/images/wildStarLogo.png" alt="Wildcats Logo" class="logo">
+
+            <!-- Title -->
+            <h1>WildSTAR (Study Area Reservation)</h1>
+            <h2>Enter User Details</h2>
+
+            <!-- Form -->
+            <form>
+                <div class="input-group">
+                    <input type="text" placeholder="ID Number" required>
+                </div>
+
+                <div class="input-group">
+                    <input type="password" placeholder="Password" required>
+                </div>
+
+                <div class="buttons">
+                    <button type="button" class="login" onclick="goLogin()">Login</button>
+                    <button type="button" class="signup" onclick="goSignup()">Sign Up</button>
+                </div>
+
+                <div class="forgot">
+                    <p>Forgot Password? <a href="/screens/forgotPassScreen/ForgotPass.html">Click Here</a></p>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+</body>
+</html>
+
+<script>
+function goLogin() {
+    window.location.href = "/home.html";
+}
+
+function goSignup() {
+    window.location.href = "/screens/registerScreen/Register.html";
+}
+
+function goForgot(){
+    window.location.href = "/screens/forgotPassScreen/ForgotPass.html";
+}
+
+</script>

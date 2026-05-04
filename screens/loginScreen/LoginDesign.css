@@ -1,0 +1,104 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Archivo Black", sans-serif;
+}
+
+/* Background */
+body {
+    height: 100vh;
+    background: url('/images/backgroundGlobal.png') no-repeat center center/cover;
+}
+
+/* Overlay */
+.overlay {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgb(168, 57, 57, 0.55);
+}
+
+/* Container */
+.container {
+    text-align: center;
+    color: white;
+    gap: 15px;
+}
+
+/* Logo */
+.logo {
+    width: 200px;
+}
+
+/* Text styling */
+h1, h2, p, a {
+    color: white;
+    padding-top: 10px;
+    padding-bottom: 5px;
+    text-shadow: 2px 2px 4px black;
+}
+
+/* Inputs */
+.input-group {
+    margin: 10px 0;
+}
+
+input {
+    width: 250px;
+    padding: 10px;
+    border-radius: 20px;
+    border: none;
+    outline: none;
+    text-align: center;
+    background: #900101;
+    color: white;
+    letter-spacing: 0.5px;
+    text-shadow: none;
+    font-size: 14px;
+}
+
+input::placeholder {
+    color: #ffffff;
+}
+
+/* Buttons */
+.buttons {
+    margin-top: 15px;
+}
+
+button {
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Maroon buttons */
+.login, .signup {
+    letter-spacing: 1px;
+    background: #ffa600;
+    color: rgb(124, 5, 5);
+    text-shadow: none;
+    width: 120px;
+}
+
+.login:hover, .signup:hover {
+    background: #fad505;
+}
+
+/* Forgot */
+.forgot {
+    letter-spacing: 0.75px;
+    margin-top: 10px;
+    font-size: 12px;
+}
+
+.forgot a {
+    text-decoration: underline;
+}

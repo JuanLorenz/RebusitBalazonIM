@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WildSTAR - Account Recovery</title>
+
+    <!-- Link external CSS -->
+    <link rel="stylesheet" href="ForgotPass.css">
+
+    <!-- Archivo Black Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="overlay">
+
+        <!-- Back button -->
+        <img src="/images/back.png" alt="Back" class="back-btn" onclick="goLogin()">
+
+        <div class="container">
+
+            <!-- Logo -->
+            <img src="/images/wildStarLogo.png" alt="Wildcats Logo" class="logo">
+
+            <!-- Title -->
+            <h1>Account Recovery</h1>
+            <h2>Enter ID Number</h2>
+
+            <!-- Form -->
+            <form onsubmit="return false;">
+                <div class="input-group">
+                    <input type="text" placeholder="" required>
+                </div>
+
+                <button type="button" class="enter-btn" onclick="verify()">Enter</button>
+            </form>
+
+        </div>
+    </div>
+
+    <script>
+        function goLogin() {
+            window.location.href = "/screens/loginScreen/Login.html";
+        }
+
+        function verify() {
+            // For now wala pay actual verification, pang traverse rani
+            window.location.href = "/screens/recovSuccessScreen/recovSuccess.html";
+        }
+    </script>
+
+</body>
+</html>
