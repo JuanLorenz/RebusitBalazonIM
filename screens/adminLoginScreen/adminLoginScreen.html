@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservation Actions</title>
+
+    <link rel="stylesheet" href="adminLoginScreen.css">
+
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="overlay">
+
+    <!-- Back Button -->
+    <img src="/images/back.png" class="back-btn" onclick="goLogin()">
+
+    <!-- Main Container -->
+    <div class="container">
+
+        <!-- Logo -->
+        <img src="/images/wildStarLogo.png" class="logo">
+
+        <h1>RESERVATION</h1>
+        <h2>Manage Reservation Status</h2>
+
+        <!-- Inputs -->
+        <div class="input-group">
+            <input type="text" placeholder="Reservation ID">
+        </div>
+
+        <div class="input-group">
+            <input type="text" placeholder="User ID">
+        </div>
+
+        <!-- Buttons -->
+        <div class="button-group">
+            <button class="action-btn confirm">Confirm</button>
+            <button class="action-btn block">Block</button>
+            <button class="action-btn unblock">Unblock</button>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
+
+<script>
+    function goLogin() {
+            window.location.href = "/screens/loginScreen/Login.html";
+        }
+</script>
