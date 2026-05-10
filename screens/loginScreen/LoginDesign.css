@@ -19,7 +19,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: rgb(168, 57, 57, 0.55);
+    background: rgba(145, 49, 49, 0.55);
 }
 
 /* Container */
@@ -54,15 +54,14 @@ input {
     border: none;
     outline: none;
     text-align: center;
-    background: #900101;
-    color: white;
-    letter-spacing: 0.5px;
-    text-shadow: none;
-    font-size: 14px;
+    background: #ffffff;
+    color: rgb(0, 0, 0);
+
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
 input::placeholder {
-    color: #ffffff;
+    color: #363636;
 }
 
 /* Buttons */
