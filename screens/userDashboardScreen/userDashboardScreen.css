@@ -67,6 +67,9 @@ body{
 }
 
 .nav-tab{
+
+    margin-top: -55px;
+
     width: 1150px;
     max-width: 95%;
 
