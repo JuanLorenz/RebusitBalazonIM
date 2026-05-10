@@ -16,7 +16,7 @@
     .overlay {
         height: 100%;
         width: 100%;
-        background: rgba(168, 57, 57, 0.55);
+        background: rgba(145, 49, 49, 0.55);
         display: flex;
         justify-content: center;
         align-items: center;
@@ -67,18 +67,20 @@
     }
 
     input {
-        width: 250px;
-        padding: 10px;
-        border-radius: 20px;
-        border: none;
-        outline: none;
-        text-align: center;
-        background: #900101;
-        color: white;
-    }
+    width: 250px;
+    padding: 10px;
+    border-radius: 20px;
+    border: none;
+    outline: none;
+    text-align: center;
+    background: #ffffff;
+    color: rgb(0, 0, 0);
+
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
 
     input::placeholder {
-        color: #fff;
+    color: #363636;
     }
 
     /* BUTTON */
