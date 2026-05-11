@@ -10,192 +10,190 @@
     <!-- Font -->
     <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
 </head>
-<body>
 
-<div class="overlay">
+<body style="background:
+        linear-gradient(rgba(145,49,49,0.55), rgba(145,49,49,0.55)),
+        url('/IMFINALPROJECT/images/backgroundGlobal.png');">
 
-    <!-- Logo -->
-    <img src="/images/wildStarLogo.png" class="logo" style="width: 150px;">
+    <div class="overlay">
 
-    <!-- Exit Button -->
-    <img src="/images/iconLogout.png" class="exit-btn" style="width: 75px;">
+        <!-- Logo -->
+        <img src="../../images/wildStarLogo.png" class="logo" style="width: 150px;" >
+        <img src="../../images/iconLogout.png" class="exit-btn" style="width: 75px;" onclick="goToLogin()">
 
-    <div style="display: flex; flex-direction: column;">
-        
-    
-        <!-- NAVIGATION TAB -->
-        <div class="nav-tab">
+        <div style="display: flex; flex-direction: column;">
 
-            <button class="nav-buttons">
-                Reservation
-            </button>
-
-            <button class="nav-buttons">
-                History
-            </button>
-
-        </div>
-
-        <!-- Reservation Card -->
-        <div class="dashboard-card">
-
-        <!-- LEFT SIDE -->
-        <!-- LEFT SIDE -->
-        <div class="left-panel">
-
-        <!-- STUDY AREA -->
-        <div class="top-dropdown">
-
-            <select id="studyArea">
-                <option selected disabled>Select Study Area</option>
-                <option>Espasyo</option>
-                <option>Learning Patio</option>
-                <option>NGC Center</option>
-            </select>
-
-        </div>
-
-        <!-- TIME IN / TIME OUT -->
-        <div class="time-row">
-
-            <select>
-                <option selected disabled>Time In</option>
-                <option>7:00 AM</option>
-                <option>8:00 AM</option>
-                <option>9:00 AM</option>
-            </select>
-
-            <select>
-                <option selected disabled>Time Out</option>
-                <option>10:00 AM</option>
-                <option>11:00 AM</option>
-                <option>12:00 PM</option>
-            </select>
-
-        </div>
-
-        <!-- SUB AREA TABLE -->
-        <div class="subarea-container">
-
-            <table class="subarea-table">
-
-                <tr>
-                    <th>Sub Areas</th>
-                </tr>
-
-                <tr>
-                    <td>Table 1</td>
-                </tr>
-
-                <tr>
-                    <td>Table 2</td>
-                </tr>
-
-                <tr>
-                    <td>Table 3</td>
-                </tr>
-
-                <tr>
-                    <td>Table 4</td>
-                </tr>
-
-                <tr>
-                    <td>Table 5</td>
-                </tr>
-
-                <tr>
-                    <td>Table 6</td>
-                </tr>
-
-            </table>
-
-        </div>
-
-        <label style="margin-top: 15    px;">How many people are accompanying you?</label>
-
-            <input 
-                type="number" 
-                id="companions"
-                min="0"
-                max="9"
-                placeholder="Enter number of companions"
-
-                style="margin-top: -10px; width: 290px;"
-            >
-
-        </div>
-
-        <!-- RIGHT SIDE -->
-        <div class="right-panel">
-
-            <label style="margin-top: -4px;">Purpose</label>
-
-            <textarea placeholder="State your purpose here..."></textarea>
-
-            <label>ID Numbers</label>
-
-            <div class="id-section">
-
-                <!-- FIRST ROW -->
-                <div class="id-row">
-                    <input type="text" placeholder="ID Number 1">
-
-                    <button class="submit-btn">
-                        Submit
-                    </button>
-                </div>
-
-                <!-- HIDDEN INPUTS -->
-                <input type="text" class="extra-id" placeholder="ID Number 2">
-                <input type="text" class="extra-id" placeholder="ID Number 3">
-                <input type="text" class="extra-id" placeholder="ID Number 4">
-                <input type="text" class="extra-id" placeholder="ID Number 5">
-                <input type="text" class="extra-id" placeholder="ID Number 6">
-                <input type="text" class="extra-id" placeholder="ID Number 7">
-                <input type="text" class="extra-id" placeholder="ID Number 8">
-                <input type="text" class="extra-id" placeholder="ID Number 9">
-                <input type="text" class="extra-id" placeholder="ID Number 10">
-
+            <!-- NAVIGATION TAB -->
+            <div class="nav-tab">
+                <button class="nav-buttons">History</button>
+                <button class="nav-buttons">Reservation</button>
             </div>
 
+            <!-- Reservation Card -->
+            <div class="dashboard-card">    
+
+                <!-- LEFT SIDE -->
+                <div class="left-panel">
+
+                    <!-- STUDY AREA -->
+                    <div class="top-dropdown">
+                        <select id="studyArea" onchange="handleStudyAreaChange(this)">
+                            <option selected disabled value="">Select Study Area</option>
+                        </select>
+                    </div>
+
+                    <!-- TIME IN / TIME OUT -->
+                    <div class="time-row">
+                        <select>
+                            <option selected disabled>Time In</option>
+                            <option>8:00 AM</option>
+                            <option>9:00 AM</option>
+                            <option>10:00 AM</option>
+                            <option>11:00 AM</option>
+                            <option>12:00 PM</option>
+                            <option>1:00 PM</option>
+                            <option>2:00 PM</option>
+                            <option>3:00 PM</option>
+                            <option>4:00 PM</option>
+                            <option>5:00 PM</option>
+                            <option>6:00 PM</option>
+                            <option>7:00 PM</option>
+                        </select>
+
+                        <select>
+                            <option selected disabled>Time Out</option>
+                            <option>9:00 AM</option>
+                            <option>10:00 AM</option>
+                            <option>11:00 AM</option>
+                            <option>12:00 PM</option>
+                            <option>1:00 PM</option>
+                            <option>2:00 PM</option>
+                            <option>3:00 PM</option>
+                            <option>4:00 PM</option>
+                            <option>5:00 PM</option>
+                            <option>6:00 PM</option>
+                            <option>7:00 PM</option>
+                            <option>8:00 PM</option>
+                        </select>
+                    </div>
+
+                    <!-- SUB AREA TABLE -->
+                    <div class="subarea-container">
+                        <table class="subarea-table">
+                            <tr>
+                                <th>Sub Areas</th>
+                            </tr>
+                            <tr><td>Table 1</td></tr>
+                            <tr><td>Table 2</td></tr>
+                            <tr><td>Table 3</td></tr>
+                            <tr><td>Table 4</td></tr>
+                            <tr><td>Table 5</td></tr>
+                            <tr><td>Table 6</td></tr>
+                        </table>
+                    </div>
+
+                    <label style="margin-top: 15px;">How many people are accompanying you?</label>
+
+                    <input 
+                        type="number" 
+                        id="companions"
+                        min="0"
+                        max="9"
+                        placeholder="Enter number of companions"
+                        style="margin-top: -10px; width: 290px;"
+                    >
+
+                </div>
+
+                <!-- RIGHT SIDE -->
+                <div class="right-panel">
+
+                    <label style="margin-top: -4px;">Purpose</label>
+                    <textarea placeholder="State your purpose here..."></textarea>
+
+                    <label>ID Numbers</label>
+
+                    <div class="id-section">
+                        <!-- FIRST ROW -->
+                        <div class="id-row">
+                            <input type="text" placeholder="ID Number 1">
+                            <button class="submit-btn">Submit</button>
+                        </div>
+
+                        <!-- HIDDEN INPUTS -->
+                        <input type="text" class="extra-id" placeholder="ID Number 2">
+                        <input type="text" class="extra-id" placeholder="ID Number 3">
+                        <input type="text" class="extra-id" placeholder="ID Number 4">
+                        <input type="text" class="extra-id" placeholder="ID Number 5">
+                        <input type="text" class="extra-id" placeholder="ID Number 6">
+                        <input type="text" class="extra-id" placeholder="ID Number 7">
+                        <input type="text" class="extra-id" placeholder="ID Number 8">
+                        <input type="text" class="extra-id" placeholder="ID Number 9">
+                        <input type="text" class="extra-id" placeholder="ID Number 10">
+                    </div>
+
+                </div>
+
+            </div>
         </div>
 
     </div>
-    </div>
 
-    
+    <script>
 
-    
+        // ─── STUDY AREA ───────────────────────────────────────────────
+        let selectedAreaID = null;
 
-</div>
+        async function loadStudyAreas() {
+            try {
+                const response = await fetch('../../php/get_study_areas.php');
+                const areas = await response.json();
 
-<script>
+                const select = document.getElementById('studyArea');
 
-    const companionsInput = document.getElementById("companions");
-    const extraInputs = document.querySelectorAll(".extra-id");
+                areas.forEach(area => {
+                    const option = document.createElement('option');
+                    option.value = area.areaID;
+                    option.textContent = area.areaName;
+                    select.appendChild(option);
+                });
 
-    companionsInput.addEventListener("input", () => {
-
-        let count = parseInt(companionsInput.value);
-
-        if (isNaN(count) || count < 0) {
-            count = 0;
+            } catch (error) {
+                console.error('Failed to load study areas:', error);
+            }
         }
 
-        extraInputs.forEach((input, index) => {
+        function handleStudyAreaChange(select) {
+            selectedAreaID = select.value;
+            console.log('Selected Area ID:', selectedAreaID);
+        }
 
-            if (index < count) {
-                input.style.display = "block";
-            } 
-            else {
-                input.style.display = "none";
-            }
+        // ─── INIT ─────────────────────────────────────────────────────
+        document.addEventListener('DOMContentLoaded', () => {
+
+            loadStudyAreas();
+
+            // ─── COMPANIONS ───────────────────────────────────────────
+            const companionsInput = document.getElementById("companions");
+            const extraInputs = document.querySelectorAll(".extra-id");
+
+            companionsInput.addEventListener("input", () => {
+                let count = parseInt(companionsInput.value);
+
+                if (isNaN(count) || count < 0) count = 0;
+
+                extraInputs.forEach((input, index) => {
+                    input.style.display = index < count ? "block" : "none";
+                });
+            });
 
         });
 
-    });
+        function goToLogin() {
+            window.location.href = "../loginScreen/Login.html";
+        }
 
-</script>
+    </script>
 
 </body>
 </html>

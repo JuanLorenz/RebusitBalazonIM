@@ -13,13 +13,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
 </head>
-<body>
+<body style="background: url('../../images/backgroundGlobal.png') no-repeat center center/cover;">
 
     <div class="overlay">
         <div class="container">
 
             <!-- Logo -->
-            <img src="/images/wildStarLogo.png" alt="Wildcats Logo" class="logo">
+            <img src="../../images/wildStarLogo.png" alt="Wildcats Logo" class="logo">
 
             <!-- Title -->
             <h1>WildSTAR (Study Area Reservation)</h1>
@@ -41,7 +41,7 @@
                 </div>
 
                 <div class="forgot">
-                    <p>Forgot Password? <a href="/screens/forgotPassScreen/ForgotPass.html">Click Here</a></p>
+                    <p>Forgot Password? <a href="../forgotPassScreen/ForgotPass.html">Click Here</a></p>
                 </div>
             </form>
 
@@ -53,15 +53,12 @@
 
 <script>
 function goLogin() {
-    window.location.href = "/home.html";
+    //window.location.href = "../adminDashboardScreen/adminDashboardScreen.html"; //Admin 
+    window.location.href = "../userDashboardScreen/userDashboardScreen.html"; //User
 }
 
 function goSignup() {
-    window.location.href = "/screens/registerScreen/Register.html";
-}
-
-function goForgot(){
-    window.location.href = "/screens/forgotPassScreen/ForgotPass.html";
+    window.location.href = "../registerScreen/Register.html";
 }
 
 </script>
