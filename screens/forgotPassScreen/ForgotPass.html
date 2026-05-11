@@ -13,17 +13,18 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
 </head>
-<body>
+
+<body style="background: url('../../images/backgroundGlobal.png') no-repeat center center/cover;">
 
     <div class="overlay">
 
         <!-- Back button -->
-        <img src="/images/back.png" alt="Back" class="back-btn" onclick="goLogin()">
+        <img src="../../images/back.png" alt="Back" class="back-btn" onclick="goLogin()">
 
         <div class="container">
 
             <!-- Logo -->
-            <img src="/images/wildStarLogo.png" alt="Wildcats Logo" class="logo">
+            <img src="../../images/wildStarLogo.png" alt="Wildcats Logo" class="logo">
 
             <!-- Title -->
             <h1>Account Recovery</h1>
@@ -43,12 +44,12 @@
 
     <script>
         function goLogin() {
-            window.location.href = "/screens/loginScreen/Login.html";
+            window.location.href = "../loginScreen/Login.html";
         }
 
         function verify() {
             // For now wala pay actual verification, pang traverse rani
-            window.location.href = "/screens/recovSuccessScreen/recovSuccess.html";
+            window.location.href = "../recovSuccessScreen/recovSuccess.html";
         }
     </script>
 
