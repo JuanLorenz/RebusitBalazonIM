@@ -31,45 +31,99 @@
         <!-- Form -->
         <div style="display: flex; flex-direction: row; gap: 20px;">
 
-                <div>
-                    <form>
-                        <div class="input-group">
-                            <input type="text" placeholder="Fullname" required>
-                        </div>
-
-                        <div class="input-group">
-                            <input type="text" placeholder="ID Number" required>
-                        </div>
-
-                        <div class="input-group">
-                            <input type="password" placeholder="Password" required>
-                        </div>
-
-                        <div class="input-group">
-                            <input type="password" placeholder="Re-enter Password" required>
-                        </div>
-                    </form>
-                </div>
-
-                <div>
-                    <form>
+            <div>
+                <form>
                     <div class="input-group">
-                        <input type="text" placeholder="Department" required>
+                        <input type="text" id="firstName" placeholder="First Name" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <input type="text" id="lastName" placeholder="Last Name" required>
                     </div>
 
                     <div class="input-group">
-                        <input type="text" placeholder="Email" required>
+                        <input type="text" id="regUserID" placeholder="ID Number" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <input type="text" id="regDeptID" placeholder="Department" required>
+                    </div>
+
+                </form>
+            </div>
+
+            <div>
+                <form>
+                    <div class="input-group">
+                        <input type="text" id="regEmail" placeholder="Email" required>
                     </div>
 
                     <div class="input-group">
-                        <input type="text" placeholder="Contact No." required>
+                        <input type="password" id="regPassword" placeholder="Password" required>
                     </div>
-                    </form>
-                </div>
+
+                    <div class="input-group">
+                        <input type="password" id="rePassword" placeholder="Re-enter Password" required>
+                    </div>
+                </form>
+            </div>
+
         </div>
-            <button type="submit" class="register-btn">Register</button>
+            <button type="button" class="register-btn" onClick="goRegister()">Register</button>
     </div>
 </div>
+
+<script>
+function goRegister() {
+    // 1. Get Values
+    const fName = document.getElementById('firstName').value;
+    const lName = document.getElementById('lastName').value;
+    const uID = document.getElementById('regUserID').value;
+    const pass = document.getElementById('regPassword').value;
+    const rePass = document.getElementById('rePassword').value;
+    const dept = document.getElementById('regDeptID').value;
+    const email = document.getElementById('regEmail').value;
+
+    // 2. Basic Validation
+    if (!fName || !lName || !uID || !pass || !dept || !email) {
+        alert("Please fill in all required fields.");
+        return;
+    }
+
+    if (pass !== rePass) {
+        alert("Passwords do not match!");
+        return;
+    }
+
+    // 3. Prepare Data
+    const formData = new FormData();
+    formData.append('firstName', fName);
+    formData.append('lastName', lName);
+    formData.append('userID', uID);
+    formData.append('password', pass);
+    formData.append('deptID', dept);
+    formData.append('email', email);
+
+    // 4. Send to PHP
+    fetch('../../php/register_user.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert("Registration Successful!");
+            window.location.href = "../loginScreen/Login.html";
+        } else {
+            alert("Error: " + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert("An error occurred. Check console.");
+    });
+}
+</script>
 
 </body>
 </html>

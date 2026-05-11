@@ -52,6 +52,7 @@
 </html>
 
 <script>
+<<<<<<< HEAD
 async function goLogin() {
     const idNumber = document.getElementById('idNumber').value.trim();
     const password = document.getElementById('password').value.trim();
@@ -84,6 +85,11 @@ async function goLogin() {
         console.error('Login error:', error);
         alert('User not found. Please try again.');
     }
+=======
+function goLogin() {
+   // window.location.href = "../adminDashboardScreen/adminDashboardScreen.html"; //Admin 
+    window.location.href = "../userDashboardScreen/userDashboardScreen.html"; //User
+>>>>>>> e0d01cbb6ab98d4f89ce20d94077393c4f9c3884
 }
 
 function goSignup() {
