@@ -28,11 +28,11 @@
             <!-- Form -->
             <form>
                 <div class="input-group">
-                    <input type="text" placeholder="ID Number" required>
+                    <input type="text" id="idNumber" placeholder="ID Number" required>
                 </div>
 
                 <div class="input-group">
-                    <input type="password" placeholder="Password" required>
+                    <input type="password" id="password" placeholder="Password" required>
                 </div>
 
                 <div class="buttons">
@@ -52,9 +52,38 @@
 </html>
 
 <script>
-function goLogin() {
-    window.location.href = "../adminDashboardScreen/adminDashboardScreen.html"; //Admin 
-    //window.location.href = "../userDashboardScreen/userDashboardScreen.html"; //User
+async function goLogin() {
+    const idNumber = document.getElementById('idNumber').value.trim();
+    const password = document.getElementById('password').value.trim();
+
+    if (!idNumber || !password) {
+        alert('Please fill in all fields.');
+        return;
+    }
+
+    try {
+        const response = await fetch('../../php/login.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `idNumber=${encodeURIComponent(idNumber)}&password=${encodeURIComponent(password)}`
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+           if (result.role === 'Admin') {
+                window.location.href = '../adminDashboardScreen/adminDashboardScreen.html';
+            } else {
+                window.location.href = '../userDashboardScreen/userDashboardScreen.html';
+            }
+        } else {
+            alert(result.message);
+        }
+
+    } catch (error) {
+        console.error('Login error:', error);
+        alert('User not found. Please try again.');
+    }
 }
 
 function goSignup() {

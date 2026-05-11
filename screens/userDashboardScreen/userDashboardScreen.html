@@ -6,8 +6,6 @@
     <title>User Dashboard</title>
 
     <link rel="stylesheet" href="userDashboardScreen.css">
-
-    <!-- Font -->
     <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
 </head>
 
@@ -17,8 +15,7 @@
 
     <div class="overlay">
 
-        <!-- Logo -->
-        <img src="../../images/wildStarLogo.png" class="logo" style="width: 150px;" >
+        <img src="../../images/wildStarLogo.png" class="logo" style="width: 150px;">
         <img src="../../images/iconLogout.png" class="exit-btn" style="width: 75px;" onclick="goToLogin()">
 
         <div style="display: flex; flex-direction: column;">
@@ -30,7 +27,7 @@
             </div>
 
             <!-- Reservation Card -->
-            <div class="dashboard-card">    
+            <div class="dashboard-card">
 
                 <!-- LEFT SIDE -->
                 <div class="left-panel">
@@ -44,37 +41,39 @@
 
                     <!-- TIME IN / TIME OUT -->
                     <div class="time-row">
-                        <select>
-                            <option selected disabled>Time In</option>
-                            <option>8:00 AM</option>
-                            <option>9:00 AM</option>
-                            <option>10:00 AM</option>
-                            <option>11:00 AM</option>
-                            <option>12:00 PM</option>
-                            <option>1:00 PM</option>
-                            <option>2:00 PM</option>
-                            <option>3:00 PM</option>
-                            <option>4:00 PM</option>
-                            <option>5:00 PM</option>
-                            <option>6:00 PM</option>
-                            <option>7:00 PM</option>
+
+                        <select id="timeIn" onchange="handleTimeChange('timeIn')">
+                            <option selected disabled value="">Time In</option>
+                            <option value="08:00:00">8:00 AM</option>
+                            <option value="09:00:00">9:00 AM</option>
+                            <option value="10:00:00">10:00 AM</option>
+                            <option value="11:00:00">11:00 AM</option>
+                            <option value="12:00:00">12:00 PM</option>
+                            <option value="13:00:00">1:00 PM</option>
+                            <option value="14:00:00">2:00 PM</option>
+                            <option value="15:00:00">3:00 PM</option>
+                            <option value="16:00:00">4:00 PM</option>
+                            <option value="17:00:00">5:00 PM</option>
+                            <option value="18:00:00">6:00 PM</option>
+                            <option value="19:00:00">7:00 PM</option>
                         </select>
 
-                        <select>
-                            <option selected disabled>Time Out</option>
-                            <option>9:00 AM</option>
-                            <option>10:00 AM</option>
-                            <option>11:00 AM</option>
-                            <option>12:00 PM</option>
-                            <option>1:00 PM</option>
-                            <option>2:00 PM</option>
-                            <option>3:00 PM</option>
-                            <option>4:00 PM</option>
-                            <option>5:00 PM</option>
-                            <option>6:00 PM</option>
-                            <option>7:00 PM</option>
-                            <option>8:00 PM</option>
+                        <select id="timeOut" onchange="handleTimeChange('timeOut')">
+                            <option selected disabled value="">Time Out</option>
+                            <option value="09:00:00">9:00 AM</option>
+                            <option value="10:00:00">10:00 AM</option>
+                            <option value="11:00:00">11:00 AM</option>
+                            <option value="12:00:00">12:00 PM</option>
+                            <option value="13:00:00">1:00 PM</option>
+                            <option value="14:00:00">2:00 PM</option>
+                            <option value="15:00:00">3:00 PM</option>
+                            <option value="16:00:00">4:00 PM</option>
+                            <option value="17:00:00">5:00 PM</option>
+                            <option value="18:00:00">6:00 PM</option>
+                            <option value="19:00:00">7:00 PM</option>
+                            <option value="20:00:00">8:00 PM</option>
                         </select>
+
                     </div>
 
                     <!-- SUB AREA TABLE -->
@@ -83,12 +82,9 @@
                             <tr>
                                 <th>Sub Areas</th>
                             </tr>
-                            <tr><td>Table 1</td></tr>
-                            <tr><td>Table 2</td></tr>
-                            <tr><td>Table 3</td></tr>
-                            <tr><td>Table 4</td></tr>
-                            <tr><td>Table 5</td></tr>
-                            <tr><td>Table 6</td></tr>
+                            <tbody id="subAreaTableBody">
+                                <tr><td>Select a study area and time first.</td></tr>
+                            </tbody>
                         </table>
                     </div>
 
@@ -114,13 +110,11 @@
                     <label>ID Numbers</label>
 
                     <div class="id-section">
-                        <!-- FIRST ROW -->
                         <div class="id-row">
                             <input type="text" placeholder="ID Number 1">
                             <button class="submit-btn">Submit</button>
                         </div>
 
-                        <!-- HIDDEN INPUTS -->
                         <input type="text" class="extra-id" placeholder="ID Number 2">
                         <input type="text" class="extra-id" placeholder="ID Number 3">
                         <input type="text" class="extra-id" placeholder="ID Number 4">
@@ -141,15 +135,26 @@
 
     <script>
 
-        // ─── STUDY AREA ───────────────────────────────────────────────
+        // ─── GLOBALS ──────────────────────────────────────────────
         let selectedAreaID = null;
+        let selectedTimeIn = null;
+        let selectedTimeOut = null;
 
+        // ─── STUDY AREA (filtered by department) ─────────────────
         async function loadStudyAreas() {
             try {
-                const response = await fetch('../../php/get_study_areas.php');
+                const response = await fetch('../../php/get_allowed_areas.php');
                 const areas = await response.json();
 
                 const select = document.getElementById('studyArea');
+
+                if (areas.length === 0) {
+                    const option = document.createElement('option');
+                    option.disabled = true;
+                    option.textContent = 'No areas available for your department';
+                    select.appendChild(option);
+                    return;
+                }
 
                 areas.forEach(area => {
                     const option = document.createElement('option');
@@ -163,31 +168,108 @@
             }
         }
 
-        function handleStudyAreaChange(select) {
+        async function handleStudyAreaChange(select) {
             selectedAreaID = select.value;
-            console.log('Selected Area ID:', selectedAreaID);
+            await tryLoadResources();
         }
 
-        // ─── INIT ─────────────────────────────────────────────────────
-        document.addEventListener('DOMContentLoaded', () => {
+        // ─── TIME ─────────────────────────────────────────────────
+       function handleTimeChange(changedField = null) {
 
-            loadStudyAreas();
+        const timeInSelect = document.getElementById('timeIn');
+        const timeOutSelect = document.getElementById('timeOut');
 
-            // ─── COMPANIONS ───────────────────────────────────────────
-            const companionsInput = document.getElementById("companions");
-            const extraInputs = document.querySelectorAll(".extra-id");
+        // ─── USER CHANGED TIME IN ─────────────────────────────
+        if (changedField === 'timeIn') {
 
-            companionsInput.addEventListener("input", () => {
-                let count = parseInt(companionsInput.value);
+            const selectedIndex = timeInSelect.selectedIndex;
 
-                if (isNaN(count) || count < 0) count = 0;
+            // TimeOut should always be +1 hour
+            timeOutSelect.selectedIndex = selectedIndex;
 
-                extraInputs.forEach((input, index) => {
-                    input.style.display = index < count ? "block" : "none";
+        }
+
+        // ─── USER CHANGED TIME OUT ────────────────────────────
+        if (changedField === 'timeOut') {
+
+            const selectedIndex = timeOutSelect.selectedIndex;
+
+            // TimeIn should always be -1 hour
+            timeInSelect.selectedIndex = selectedIndex;
+
+        }
+
+        selectedTimeIn = timeInSelect.value;
+        selectedTimeOut = timeOutSelect.value;
+
+        tryLoadResources();
+    }
+
+        // ─── ONLY LOAD RESOURCES WHEN ALL 3 ARE SET ───────────────
+        async function tryLoadResources() {
+            if (!selectedAreaID || !selectedTimeIn || !selectedTimeOut) {
+                document.getElementById('subAreaTableBody').innerHTML =
+                    '<tr><td>Select a study area and time first.</td></tr>';
+                return;
+            }
+
+            // Build datetime strings using today's date
+            const today = new Date().toISOString().split('T')[0];
+            const startTime = `${today} ${selectedTimeIn}`;
+            const endTime   = `${today} ${selectedTimeOut}`;
+
+            await loadResources(selectedAreaID, startTime, endTime);
+        }
+
+        async function loadResources(areaID, startTime, endTime) {
+            try {
+                const url = `../../php/get_available_resources.php?areaID=${areaID}&startTime=${encodeURIComponent(startTime)}&endTime=${encodeURIComponent(endTime)}`;
+                const response = await fetch(url);
+                const resources = await response.json();
+
+                const tbody = document.getElementById('subAreaTableBody');
+                tbody.innerHTML = '';
+
+                if (resources.length === 0) {
+                    tbody.innerHTML = '<tr><td>No available sub areas for this time slot.</td></tr>';
+                    return;
+                }
+
+                resources.forEach(resource => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `<td>${resource.resourceName}</td>`;
+                    tbody.appendChild(tr);
                 });
+
+            } catch (error) {
+                console.error('Failed to load resources:', error);
+            }
+        }
+
+        // ─── INIT ─────────────────────────────────────────────────
+       document.addEventListener('DOMContentLoaded', () => {
+
+        loadStudyAreas();
+
+        handleTimeChange();
+
+        // ─── COMPANIONS ───────────────────────────────────────
+        const companionsInput = document.getElementById("companions");
+        const extraInputs = document.querySelectorAll(".extra-id");
+
+        companionsInput.addEventListener("input", () => {
+
+            let count = parseInt(companionsInput.value);
+
+            if (isNaN(count) || count < 0) count = 0;
+
+            extraInputs.forEach((input, index) => {
+                input.style.display = index < count ? "block" : "none";
             });
 
         });
+
+    });
 
         function goToLogin() {
             window.location.href = "../loginScreen/Login.html";
@@ -196,4 +278,4 @@
     </script>
 
 </body>
-</html>
+</html> 
