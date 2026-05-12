@@ -6,7 +6,7 @@
 
 ### Business Rules
 1. A user/reservation participant can only reserve once at a time. If they have a current reservation that’s ‘Pending’ or ’Active’, they can’t reserve another one until it finishes.
-2. A user can either reserve a spot for today or the day after.
+2. A user can only reserve a spot for the same day.
 3. During the reservation, the user must go directly to the Admin for them to mark the user as present.
 4. At least one participant from the reservation is required to be present (in the first 15 minutes) to make the reservation ‘Active’.
 5. After the 15 minutes are done and no participant is present, the reservation is marked as ‘No Show’.
