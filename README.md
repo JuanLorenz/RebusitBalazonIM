@@ -10,8 +10,8 @@
 3. During the reservation, the user must go directly to the Admin for them to mark the user as present.
 4. At least one participant from the reservation is required to be present (in the first 15 minutes) to make the reservation ‘Active’.
 5. After the 15 minutes are done and no participant is present, the reservation is marked as ‘No Show’.
-6. A user is blocked if they weren’t present during the reservation period, or if the reservation is marked as ‘No Show’.
-7. A blocked user cannot make reservations for 7 days.
+6. A user is blocked if the reservation is marked as ‘No Show’.
+7. A blocked user cannot make reservations for 24 hours.
 8. A user can be unblocked early by the Admin. The requirements are up to their discretion.
 9. A single reservation can only have a one hour time allotment.
 10. A study area can either be open to all departments or restricted to specific departments.
