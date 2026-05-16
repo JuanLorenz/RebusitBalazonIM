@@ -1,36 +1,48 @@
 <?php
+header('Content-Type: application/json');
 require_once 'db_connect.php';
 
-// Collect POST data
 $firstName = $_POST['firstName'] ?? '';
-$lastName = $_POST['lastName'] ?? '';
-$userID = $_POST['userID'] ?? '';
-$deptID = $_POST['deptID'] ?? '';
-$email = $_POST['email'] ?? '';
-$plainPassword = $_POST['password'] ?? '';
+$lastName  = $_POST['lastName'] ?? '';
+$userID    = $_POST['userID'] ?? '';
+$deptID    = $_POST['deptID'] ?? '';
+$email     = $_POST['email'] ?? '';
+$password  = $_POST['password'] ?? '';
 
-// Check if variables are empty
-if(empty($userID) || empty($plainPassword)) {
+if (!$userID || !$password) {
     echo json_encode(['success' => false, 'message' => 'Missing data.']);
     exit;
 }
 
-// Hash the password
-$hashedPassword = password_hash($plainPassword, PASSWORD_DEFAULT);
+$hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-try {
-    // Insert into tblUser
-    // Default blocked_until is NULL and user_type is 'Patron'
-    $sql = "INSERT INTO tblUser (userID, departmentID, firstName, lastName, email, password, user_type) 
-            VALUES (?, ?, ?, ?, ?, ?, 'Patron')";
-    
-    $stmt = $conn->prepare($sql);
-    $stmt->execute([$userID, $deptID, $firstName, $lastName, $email, $hashedPassword]);
+$stmt = $conn->prepare("
+    INSERT INTO tblUser 
+    (userID, departmentID, firstName, lastName, email, password, user_type)
+    VALUES (?, ?, ?, ?, ?, ?, 'Patron')
+");
 
-    echo json_encode(['success' => true]);
-
-} catch (PDOException $e) {
-    // Handle duplicate ID or foreign key error (e.g. invalid Dept ID)
-    echo json_encode(['success' => false, 'message' => "Database Error: " . $e->getMessage()]);
+if (!$stmt) {
+    echo json_encode(['success' => false, 'message' => $conn->error]);
+    exit;
 }
+
+$stmt->bind_param(
+    "ssssss",
+    $userID,
+    $deptID,
+    $firstName,
+    $lastName,
+    $email,
+    $hashedPassword
+);
+
+if ($stmt->execute()) {
+    echo json_encode(['success' => true]);
+} else {
+    echo json_encode(['success' => false, 'message' => $stmt->error]);
+}
+
+$stmt->close();
+$conn->close();
 ?>
