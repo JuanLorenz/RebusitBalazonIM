@@ -12,6 +12,8 @@
 </head>
 <body style="background: url('../../images/backgroundGlobal.png') no-repeat center center/cover;">
 
+<script>console.log("INLINE TEST");</script>
+
 <div class="overlay">
 
     <!-- Back Button -->
@@ -28,28 +30,126 @@
 
         <!-- Inputs -->
         <div class="input-group">
-            <input type="text" placeholder="Reservation ID">
+            <input type="text" id="reservationID" placeholder="Reservation ID">
         </div>
 
         <div class="input-group">
-            <input type="text" placeholder="User ID">
+            <input type="text" id="userID" placeholder="User ID">
         </div>
 
-        <!-- Buttons -->
         <div class="button-group">
-            <button class="action-btn confirm">Confirm</button>
-            <button class="action-btn block">Block</button>
-            <button class="action-btn unblock">Unblock</button>
+            <button class="action-btn confirm" onclick="confirmReservation()">Confirm</button>
+            <button class="action-btn block" onclick="blockUser()">Block</button>
+            <button class="action-btn unblock" onclick="unblockUser()">Unblock</button>
         </div>
 
     </div>
 </div>
 
-</body>
-</html>
 
 <script>
+
+    console.log("JS LOADED");
+    console.log(window.confirmReservation);
+
     function goLogin() {
             window.location.href = "../loginScreen/Login.html";
-        }
+    }
+
+    window.confirmReservation = async function () {
+
+    console.log("CONFIRM CLICKED");
+
+    const reservationID = document.getElementById("reservationID").value.trim();
+
+    if (!reservationID) {
+        alert("Please enter Reservation ID.");
+        return;
+    }
+
+    try {
+
+        const response = await fetch("../../php/confirm_reservation.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ reservationID })
+        });
+
+        const text = await response.text();
+        console.log("RAW:", text);
+
+        const result = JSON.parse(text);
+        alert(result.message);
+
+    } catch (error) {
+        console.error(error);
+        alert("Request failed.");
+    }
+};
+
+    window.blockUser = async function () {
+
+    console.log("BLOCK CLICKED");
+
+    const userID = document.getElementById("userID").value.trim();
+
+    if (!userID) {
+        alert("Enter User ID");
+        return;
+    }
+
+    try {
+
+        const response = await fetch("../../php/block_user.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ userID })
+        });
+
+        const text = await response.text();
+        const result = JSON.parse(text);
+
+        alert(result.message);
+
+    } catch (err) {
+        console.error(err);
+        alert("Failed to block user.");
+    }
+};
+
+window.unblockUser = async function () {
+
+    console.log("UNBLOCK CLICKED");
+
+    const userID = document.getElementById("userID").value.trim();
+
+    if (!userID) {
+        alert("Enter User ID");
+        return;
+    }
+
+    try {
+
+        const response = await fetch("../../php/unblock_user.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ userID })
+        });
+
+        const text = await response.text();
+        const result = JSON.parse(text);
+
+        alert(result.message);
+
+    } catch (err) {
+        console.error(err);
+        alert("Failed to unblock user.");
+    }
+};
+
 </script>
+
+</body>
+</html>
