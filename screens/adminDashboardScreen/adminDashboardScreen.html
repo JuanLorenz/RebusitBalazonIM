@@ -6,507 +6,375 @@
     <title>Admin Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
     <style>
-/* ── RESET ────────────────────────────────────────── */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Archivo Black", sans-serif;
-}
-body {
-    height: 100vh;
-    overflow-y: auto;
-}
+        /* ── RESET & BASE (Matching User Dashboard) ──────────────── */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Archivo Black", sans-serif;
+        }
 
-/* ── OVERLAY ──────────────────────────────────────── */
-.overlay {
-    min-height: 100vh;
-    width: 100%;
-    background: rgba(145, 49, 49, 0.55);
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 30px 0 30px;
-    position: relative;
-}
+        body {
+            height: 100vh;
+            overflow-y: auto;
+            background: linear-gradient(rgba(145,49,49,0.55), rgba(145,49,49,0.55)),
+                        url('../../images/backgroundGlobal.png');
+            background-position: center;
+            background-size: cover;
+            background-attachment: fixed;
+        }
 
-/* ── BACK BUTTON ──────────────────────────────────── */
-.back-btn {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    width: 55px;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-    z-index: 10;
-}
-.back-btn:hover { transform: scale(1.1); }
+        .overlay {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 80px 20px;
+            position: relative;
+        }
 
-.action-status {
-    min-height: 20px;
-    margin-top: 4px;
-    position: relative;
-    z-index: 9999;
+        /* ── NAVIGATION & LOGOS ──────────────────────────────────── */
+        .logo {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            width: 150px;
+            z-index: 1000;
+        }
 
-    text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
-    letter-spacing: 1px;
-    color: #ffffff;
-    font-size: 14px;
-}
+        .exit-btn {
+            position: fixed;
+            top: 12px;
+            right: 12px;
+            width: 75px;
+            cursor: pointer;
+            transition: 0.2s ease;
+            z-index: 1000;
+        }
 
-/* ── MAIN CONTAINER ───────────────────────────────── */
-.container {
-    text-align: center;
-    color: white;
-    width: 600px;
-    max-width: 95vw;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-}
+        .exit-btn:hover { transform: scale(1.08); }
 
-/* ── LOGO ─────────────────────────────────────────── */
-.logo { width: 100px; }
+        .nav-tab {
+            margin-top: -55px;
+            width: 1150px;
+            max-width: 95%;
+            display: flex;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
 
-/* ── HEADINGS ─────────────────────────────────────── */
-h1 {
-    text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
-    font-size: 30px;
-    letter-spacing: 2px;
-}
-h2 {
-    font-size: 16px;
-    text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
-    font-weight: normal;
-    letter-spacing: 1px;
-    color: #ffffff;
-}
+        .nav-header-text {
+            color: white;
+            font-size: 24px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
 
-/* ── SELECTION INFO BAR ───────────────────────────── */
-.selection-bar {
-    width: 100%;
-    background: #ffffff;
-    border: none;
-    border-radius: 10px;
-    padding: 8px 16px;
-    font-size: 12px;
-    letter-spacing: 0.5px;
-    color: #888888 !important;
-    text-align: left;
-}
-.selection-bar.active {
-    background: #ffffff;
-    border: none;
-    color: #111111 !important;
-    box-shadow: none;
-}
+        /* ── MAIN CARD ───────────────────────────────────────────── */
+        .dashboard-card {
+            width: 1150px;
+            max-width: 95%;
+            min-height: 650px;
+            background: rgba(120, 0, 0, 0.88);
+            border-radius: 22px;
+            padding: 45px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
 
-/* ── LIST WRAPPER ─────────────────────────────────── */
-.list-wrapper {
-    width: 100%;
-    background: #ffffff;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-}
+        /* ── SELECTION BAR ───────────────────────────────────────── */
+        .selection-bar {
+            width: 100%;
+            height: 55px;
+            background: white;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            padding: 0 18px;
+            font-size: 14px;
+            color: #555;
+            box-shadow: 0 0 8px rgba(0,0,0,0.4);
+        }
+        .selection-bar.active { color: #7a0000; font-weight: bold; }
 
-/* ── LIST HEADER ──────────────────────────────────── */
-.list-header {
-    display: grid;
-    grid-template-columns: 1fr 1.2fr 1.2fr 2fr 1fr;
-    padding: 0 16px;
-    height: 37px;
-    background: #111111;
-    font-size: 10px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: #ffffff !important;
-    align-items: center;
-}
+        /* ── TABLE STYLING (Matching User Sub-area Table) ────────── */
+        .list-container {
+            width: 100%;
+            height: 350px;
+            background: white;
+            border-radius: 20px;
+            overflow-y: auto;
+            border: 2px solid #000;
+        }
 
-.list-header span { color: #ffffff !important; }
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            color: black;
+            background: white;
+        }
 
-/* ── LIST BODY ────────────────────────────────────── */
-/* 10 rows × 38px = 380px */
-.list-body {
-    height: 380px;
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: #cccccc transparent;
-}
-.list-body::-webkit-scrollbar { width: 4px; }
-.list-body::-webkit-scrollbar-thumb {
-    background: #cccccc;
-    border-radius: 10px;
-}
+        .admin-table th {
+            background: #ffb300;
+            color: #7a0000;
+            padding: 15px;
+            font-size: 14px;
+            border: 1px solid black;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            text-transform: uppercase;
+        }
 
-/* ── LIST ROWS ────────────────────────────────────── */
+        .admin-table td {
+            padding: 12px 15px;
+            border: 1px solid black;
+            cursor: pointer;
+            transition: 0.2s ease;
+            font-size: 13px;
+        }
 
-.list-row {
-    display: grid;
-    grid-template-columns: 1fr 1.2fr 1.2fr 2fr 1fr;
-    padding: 0 16px;
-    height: 38px;
-    font-size: 12px;
-    color: #111111 !important;
-    cursor: pointer;
-    border-bottom: 1px solid #e8e8e8;
-    transition: background 0.12s ease;
-    animation: rowFadeIn 0.25s ease both;
-    align-items: center;
-}
+        .admin-table tr:hover td { background: #dcdcdc; }
+        .admin-table tr.selected td { background: #ffa600 !important; color: #7a0000; }
 
-.list-row span { color: #111111 !important; }
+        /* ── STATUS BADGES ───────────────────────────────────────── */
+        .badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            text-transform: uppercase;
+            border: 1px solid #000;
+            display: inline-block;
+        }
+        .badge.pending { background: #fff3cc; color: #7a5500; }
+        .badge.confirmed { background: #dceeff; color: #1a4a8b; }
+        .badge.cancelled { background: #fde8e8; color: #8b1a1a; }
 
-@keyframes rowFadeIn {
-    from { opacity: 0; transform: translateY(4px); }
-    to   { opacity: 1; transform: translateY(0); }
-}
-.list-row:last-child { border-bottom: none; }
-.list-row:nth-child(even) { background: #f5f5f5; }
-.list-row:nth-child(odd)  { background: #ffffff; }
-.list-row:hover    { background: #ffe8b0 !important; }
-.list-row.selected { background: #ffa600 !important; }
-.list-row.selected span { color: #111111 !important; }
+        /* ── BUTTONS ─────────────────────────────────────────────── */
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
 
-/* ── COLUMN ALIGNMENT ─────────────────────────────── */
-.col-id       { font-size: 11px; color: #666666 !important; }
-.col-user     { font-size: 11px; color: #111111 !important; }
-.col-resource { font-size: 11px; color: #666666 !important; }
-.col-time     { font-size: 10px; color: #444444 !important; }
-.col-status   { display: flex; align-items: center; }
+        .action-btn {
+            flex: 1;
+            height: 55px;
+            border: none;
+            border-radius: 14px;
+            background: #ffb300;
+            color: #7a0000;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.2s ease;
+            box-shadow: 0 0 8px rgba(0,0,0,0.4);
+            text-transform: uppercase;
+        }
 
-/* ── STATUS BADGES ────────────────────────────────── */
-.badge {
-    display: inline-block;
-    padding: 3px 9px;
-    border-radius: 20px;
-    font-size: 9px;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    font-weight: bold;
-    border: 1px solid #cccccc;
-    background: #eeeeee;
-    color: #444444 !important;
-}
-.badge.active    { background: #d4f5e2 !important; color: #1a7a45 !important; border-color: #a3dbbe !important; }
-.badge.pending   { background: #fff3cc !important; color: #7a5500 !important; border-color: #ffd966 !important; }
-.badge.cancelled { background: #fde8e8 !important; color: #8b1a1a !important; border-color: #f5a0a0 !important; }
-.badge.confirmed { background: #dceeff !important; color: #1a4a8b !important; border-color: #90bfee !important; }
+        .action-btn:hover { background: #ffd000; transform: scale(1.03); }
+        .action-btn:active { transform: scale(0.98); }
 
-/* ── LOADING / EMPTY ROW ──────────────────────────── */
-.loading-row {
-    height: 380px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #888888 !important;
-    font-size: 12px;
-    letter-spacing: 1px;
-    background: #ffffff;
-}
-.loading-row.error { color: #cc2222 !important; background: #fff8f8; }
+        /* ── PAGINATION ──────────────────────────────────────────── */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 10px;
+        }
 
-/* ── PAGINATION ───────────────────────────────────── */
-.pagination {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-.page-btn {
-    background: rgba(0,0,0,0.35);
-    color: rgba(255,255,255,0.75) !important;
-    border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 8px;
-    padding: 6px 12px;
-    font-size: 14px;
-    font-family: "Archivo Black", sans-serif;
-    cursor: pointer;
-    transition: all 0.15s ease;
-    min-width: 34px;
-}
-.page-btn:hover:not([disabled]) {
-    background: rgba(255,166,0,0.15);
-    border-color: rgba(255,166,0,0.5);
-    color: #ffd000 !important;
-}
-.page-btn.active {
-    background: #ffa600;
-    color: #7a0000 !important;
-    border-color: #ffa600;
-}
-.page-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-.selection-bar span { color: inherit !important; }
-.page-dots { color: rgba(255,255,255,0.35); font-size: 12px; padding: 0 2px; }
+        .page-btn {
+            background: #ffb300;
+            color: #7a0000;
+            border: none;
+            border-radius: 10px;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .page-btn.active { background: white; color: #7a0000; border: 2px solid #ffb300; }
+        .page-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-/* ── ACTION BUTTONS ───────────────────────────────── */
-.button-group {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-.action-btn {
-    padding: 10px 22px;
-    border: none;
-    border-radius: 20px;
-    font-family: "Archivo Black", sans-serif;
-    font-size: 12px;
-    letter-spacing: 0.5px;
-    cursor: pointer;
-    transition: background 0.2s ease, transform 0.1s ease;
-    background: #ffa600;
-    color: #7a0000 !important;
-}
-.action-btn:hover  { background: #ffd000; transform: scale(1.04); }
-.action-btn:active { transform: scale(0.97); }
+        .action-status {
+            text-align: center;
+            color: white;
+            font-size: 14px;
+            margin-top: 10px;
+            height: 20px;
+        }
+
+        /* Custom Scrollbar for the table container */
+        .list-container::-webkit-scrollbar { width: 8px; }
+        .list-container::-webkit-scrollbar-thumb { background: #7a0000; border-radius: 10px; }
     </style>
 </head>
-<body style="background: url('../../images/backgroundGlobal.png') no-repeat center center/cover;">
+<body>
 
-<div class="overlay">
+    <div class="overlay">
+        <!-- Matching User Dashboard Assets -->
+        <img src="../../images/wildStarLogo.png" class="logo">
+        <img src="../../images/iconLogout.png" class="exit-btn" onclick="goLogin()">
 
-    <img src="../../images/back.png" class="back-btn" onclick="goLogin()" alt="Back">
-
-    <div class="container">
-
-        <h1>Admin Dashboard</h1>
-        <h2>Manage Reservations</h2>
-
-        <!-- Selection Info Bar -->
-        <div class="selection-bar" id="selectionBar">
-            <span id="selectionText">No reservation selected</span>
-        </div>
-
-        <!-- Reservation List -->
-        <div class="list-wrapper">
-            <div class="list-header">
-                <span class="col-id">Res. ID</span>
-                <span class="col-user">User ID</span>
-                <span class="col-resource">Resource</span>
-                <span class="col-time">Start Time</span>
-                <span class="col-status">Status</span>
+        <div style="display: flex; flex-direction: column; width: 1150px; max-width: 95%;">
+            
+            <div class="nav-tab">
+                <span class="nav-header-text">Admin / Manage Reservations</span>
             </div>
-            <div class="list-body" id="reservationList">
-                <div class="loading-row">Loading reservations…</div>
+
+            <div class="dashboard-card">
+                
+                <!-- Selection Info Bar -->
+                <div class="selection-bar" id="selectionBar">
+                    <span id="selectionText">Click a reservation to select...</span>
+                </div>
+
+                <!-- Reservation List (Table) -->
+                <div class="list-container">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Res. ID</th>
+                                <th>User ID</th>
+                                <th>Resource</th>
+                                <th>Start Time</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reservationList">
+                            <!-- Rows loaded via JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="pagination" id="pagination"></div>
+
+                <!-- Action Buttons -->
+                <div class="button-group">
+                    <button class="action-btn" onclick="confirmReservation()">Confirm Reservation</button>
+                    <button class="action-btn" onclick="blockUser()" style="background: #e74c3c; color: white;">Block User</button>
+                    <button class="action-btn" onclick="unblockUser()">Unblock User</button>
+                </div>
+
+                <div id="actionStatus" class="action-status"></div>
+
             </div>
         </div>
-
-        <!-- Pagination -->
-        <div class="pagination" id="pagination"></div>
-
-        <!-- Action Buttons -->
-        <div class="button-group">
-            <button class="action-btn confirm" onclick="confirmReservation()">Confirm</button>
-            <button class="action-btn block"   onclick="blockUser()">Block</button>
-            <button class="action-btn unblock" onclick="unblockUser()">Unblock</button>
-        </div>
-
-        <div id="actionStatus" class="action-status"></div>
-
     </div>
-</div>
 
-<script>
-    let selectedReservation = null;
-    let currentPage = 1;
+    <script>
+        let selectedReservation = null;
+        let currentPage = 1;
 
-    function showStatus(message, isError = false) {
-    const status = document.getElementById("actionStatus");
+        function showStatus(message, isError = false) {
+            const status = document.getElementById("actionStatus");
+            status.textContent = message;
+            status.style.color = isError ? "#ffb3b3" : "#ffd000";
+            setTimeout(() => { status.textContent = ""; }, 3000);
+        }
 
-    status.textContent = message;
-    status.style.color = isError ? "#ffb3b3" : "#ffffff";
+        function goLogin() { window.location.href = "../loginScreen/Login.html"; }
 
-    setTimeout(() => {
-        status.textContent = "";
-    }, 3000);
-    }
+        async function loadReservations(page = 1) {
+            currentPage = page;
+            const tbody = document.getElementById("reservationList");
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Loading...</td></tr>';
 
-    function goLogin() {
-        window.location.href = "../loginScreen/Login.html";
-    }
+            try {
+                const res = await fetch(`../../php/get_reservations.php?page=${page}`);
+                const data = await res.json();
 
-    async function loadReservations(page = 1) {
-        currentPage = page;
-        const listBody = document.getElementById("reservationList");
-        listBody.innerHTML = '<div class="loading-row">Loading…</div>';
+                if (!data.success) {
+                    tbody.innerHTML = `<tr><td colspan="5" style="color:red;">Error: ${data.message}</td></tr>`;
+                    return;
+                }
 
-        try {
-            const res = await fetch(`../../php/get_reservations.php?page=${page}`);
-            const raw = await res.text();
-            console.log("RAW:", raw);
+                renderList(data.reservations);
+                renderPagination(data.currentPage, data.totalPages);
+            } catch (err) {
+                tbody.innerHTML = `<tr><td colspan="5">Network error. Check console.</td></tr>`;
+            }
+        }
 
-            let data;
-            try { data = JSON.parse(raw); }
-            catch (e) {
-                listBody.innerHTML = `<div class="loading-row error">PHP error — see console.</div>`;
-                console.error(raw);
+        function renderList(reservations) {
+            const tbody = document.getElementById("reservationList");
+            tbody.innerHTML = '';
+
+            if (!reservations.length) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No records found.</td></tr>';
                 return;
             }
 
-            if (!data.success) {
-                listBody.innerHTML = `<div class="loading-row error">Error: ${data.message}</div>`;
-                return;
-            }
+            reservations.forEach(r => {
+                const row = document.createElement("tr");
+                const rawStatus = (r.status_type || 'pending').trim().toLowerCase();
+                
+                const startDate = r.startTime ? new Date(r.startTime) : null;
+                const dateStr = startDate ? startDate.toLocaleString('en-PH') : '—';
 
-            if (data.warning) console.warn(data.warning);
-            renderList(data.reservations);
-            renderPagination(data.currentPage, data.totalPages);
+                row.innerHTML = `
+                    <td>#${r.reservationID}</td>
+                    <td>${r.userID}</td>
+                    <td>${r.resourceName || r.resourceID}</td>
+                    <td>${dateStr}</td>
+                    <td><span class="badge ${rawStatus}">${rawStatus}</span></td>
+                `;
 
-        } catch (err) {
-            listBody.innerHTML = `<div class="loading-row error">Network error.</div>`;
-            console.error(err);
-        }
-    }
-
-    function renderList(reservations) {
-        const listBody = document.getElementById("reservationList");
-
-        if (!reservations.length) {
-            listBody.innerHTML = '<div class="loading-row">No reservations found.</div>';
-            return;
+                row.onclick = () => selectRow(row, r);
+                tbody.appendChild(row);
+            });
         }
 
-        listBody.innerHTML = '';
+        function selectRow(rowEl, reservation) {
+            document.querySelectorAll("#reservationList tr").forEach(tr => tr.classList.remove("selected"));
+            rowEl.classList.add("selected");
+            selectedReservation = reservation;
 
-        reservations.forEach((r, index) => {
-            const row = document.createElement("div");
-            row.className = "list-row";
-            row.style.animationDelay = `${index * 40}ms`;
+            const bar = document.getElementById("selectionBar");
+            const text = document.getElementById("selectionText");
+            bar.classList.add("active");
+            text.textContent = `SELECTED: Res #${reservation.reservationID} (User: ${reservation.userID})`;
+        }
 
-            const rawStatus   = (r.status_type || 'pending').trim();
-            const statusClass = rawStatus.toLowerCase().replace(/\s+/g, '-');
+        function renderPagination(current, total) {
+            const pag = document.getElementById("pagination");
+            pag.innerHTML = '';
+            if (total <= 1) return;
 
-            const startDate = r.startTime ? new Date(r.startTime) : null;
-            const dateStr   = startDate
-                ? startDate.toLocaleDateString('en-PH', { month: 'short', day: 'numeric', year: 'numeric' })
-                  + ' ' + startDate.toLocaleTimeString('en-PH', { hour: '2-digit', minute: '2-digit' })
-                : '—';
-
-            row.innerHTML = `
-                <span class="col-id">#${r.reservationID}</span>
-                <span class="col-user">${r.userID}</span>
-                <span class="col-resource">${r.resourceID ?? '—'}</span>
-                <span class="col-time">${dateStr}</span>
-                <span class="col-status"><span class="badge ${statusClass}">${rawStatus}</span></span>
-            `;
-
-            row.addEventListener("click", () => selectRow(row, r));
-            listBody.appendChild(row);
-        });
-    }
-
-    function selectRow(rowEl, reservation) {
-        document.querySelectorAll(".list-row.selected").forEach(r => r.classList.remove("selected"));
-        rowEl.classList.add("selected");
-        selectedReservation = reservation;
-
-        const bar  = document.getElementById("selectionBar");
-        const text = document.getElementById("selectionText");
-        bar.classList.add("active");
-        text.textContent = `Selected → Res. #${reservation.reservationID}  |  User ID: ${reservation.userID}`;
-    }
-
-    function renderPagination(current, total) {
-        const pag = document.getElementById("pagination");
-        pag.innerHTML = '';
-        if (total <= 1) return;
-
-        const prev = document.createElement("button");
-        prev.textContent = "‹";
-        prev.className   = "page-btn";
-        prev.disabled    = current === 1;
-        prev.onclick     = () => loadReservations(current - 1);
-        pag.appendChild(prev);
-
-        pageRange(current, total).forEach(p => {
-            if (p === '…') {
-                const dot = document.createElement("span");
-                dot.className   = "page-dots";
-                dot.textContent = "…";
-                pag.appendChild(dot);
-            } else {
+            for (let i = 1; i <= total; i++) {
                 const btn = document.createElement("button");
-                btn.textContent = p;
-                btn.className   = "page-btn" + (p === current ? " active" : "");
-                btn.onclick     = () => loadReservations(p);
+                btn.textContent = i;
+                btn.className = "page-btn" + (i === current ? " active" : "");
+                btn.onclick = () => loadReservations(i);
                 pag.appendChild(btn);
             }
-        });
-
-        const next = document.createElement("button");
-        next.textContent = "›";
-        next.className   = "page-btn";
-        next.disabled    = current === total;
-        next.onclick     = () => loadReservations(current + 1);
-        pag.appendChild(next);
-    }
-
-    function pageRange(current, total) {
-        if (total <= 7) return Array.from({length: total}, (_, i) => i + 1);
-        const pages = [1];
-        if (current > 3) pages.push('…');
-        for (let i = Math.max(2, current - 1); i <= Math.min(total - 1, current + 1); i++) pages.push(i);
-        if (current < total - 2) pages.push('…');
-        pages.push(total);
-        return pages;
-    }
-
-    function requireSelection() {
-        if (!selectedReservation) {
-            showStatus("Please select reservation from the list first",false);
-            return false;
         }
-        return true;
-    }
 
-    window.confirmReservation = async function () {
-        if (!requireSelection()) return;
-        try {
-            const res    = await fetch("../../php/confirm_reservation.php", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ reservationID: selectedReservation.reservationID })
-            });
-            const result = await res.json();
-            showStatus(result.message,false);
-            if (result.success) loadReservations(currentPage);
-        } catch (err) { console.error(err); showStatus("Request failed.",false); }
-    };
+        // --- Logic Handlers ---
+        async function handleAction(url, body) {
+            if (!selectedReservation) {
+                showStatus("Please select a reservation first!", true);
+                return;
+            }
+            try {
+                const res = await fetch(url, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(body)
+                });
+                const result = await res.json();
+                showStatus(result.message);
+                if (result.success) loadReservations(currentPage);
+            } catch (err) { showStatus("Request failed.", true); }
+        }
 
-    window.blockUser = async function () {
-        if (!requireSelection()) return;
-        try {
-            const res    = await fetch("../../php/block_user.php", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ userID: selectedReservation.userID })
-            });
-            const result = await res.json();
-            showStatus(result.message,false);
-            if (result.success) loadReservations(currentPage);
-        } catch (err) { console.error(err); showStatus("Failed to block user.",false); }
-    };
+        window.confirmReservation = () => handleAction("../../php/confirm_reservation.php", { reservationID: selectedReservation.reservationID });
+        window.blockUser = () => handleAction("../../php/block_user.php", { userID: selectedReservation.userID });
+        window.unblockUser = () => handleAction("../../php/unblock_user.php", { userID: selectedReservation.userID });
 
-    window.unblockUser = async function () {
-        if (!requireSelection()) return;
-        try {
-            const res    = await fetch("../../php/unblock_user.php", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ userID: selectedReservation.userID })
-            });
-            const result = await res.json();
-            showStatus(result.message,false);
-            if (result.success) loadReservations(currentPage);
-        } catch (err) { console.error(err); showStatus("Failed to unblock user.",false); }
-    };
-
-    loadReservations(1);
-</script>
-
+        loadReservations(1);
+    </script>
 </body>
 </html>

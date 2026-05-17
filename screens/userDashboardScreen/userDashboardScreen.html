@@ -1,518 +1,343 @@
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>User Dashboard</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
 
-        <link rel="stylesheet" href="userDashboardScreen.css">
-        <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
-    </head>
+    <link rel="stylesheet" href="userDashboardScreen.css">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
+    <style>
+        .id-scroll-window {
+            width: 100%;
+            max-height: 200px;
+            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            border-radius: 14px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
 
-    <body style="background:
-            linear-gradient(rgba(145,49,49,0.55), rgba(145,49,49,0.55)),
-            url('../../images/backgroundGlobal.png');">
+        /* Styling for the User's own ID (non-editable) */
+        .self-id-tag {
+            background: rgba(255, 179, 0, 0.15);
+            border: 2px solid #ffb300;
+            color: #ffb300;
+            padding: 12px 18px;
+            border-radius: 14px;
+            font-size: 13px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-        <div class="overlay">
+        .self-id-tag span { font-size: 10px; opacity: 0.8; }
 
-            <img src="../../images/wildStarLogo.png" class="logo" style="width: 150px;">
-            <img src="../../images/iconLogout.png" class="exit-btn" style="width: 75px;" onclick="goToLogin()">
+        .id-scroll-window::-webkit-scrollbar { width: 6px; }
+        .id-scroll-window::-webkit-scrollbar-thumb { 
+            background: #ffb300; 
+            border-radius: 10px; 
+        }
 
-            <div style="display: flex; flex-direction: column;">
+        .submit-btn:disabled {
+            background: #555 !important;
+            color: #999 !important;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none;
+        }
 
-                <!-- NAVIGATION TAB -->
-                <div class="nav-tab">
-                    <button class="nav-buttons">History</button>
-                    <button class="nav-buttons">Reservation</button>
-                </div>
+        input:disabled, select:disabled {
+            background: #ddd !important;
+            cursor: not-allowed;
+        }
 
-                <!-- Reservation Card -->
-                <div class="dashboard-card">
+        .reservation-blocker {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            display: none; 
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            border-radius: 22px;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
 
-                    <!-- LEFT SIDE -->
-                    <div class="left-panel">
+<body style="background: linear-gradient(rgba(145,49,49,0.55), rgba(145,49,49,0.55)), url('../../images/backgroundGlobal.png');">
 
-                        <!-- STUDY AREA -->
-                        <div class="top-dropdown">
-                            <select id="studyArea" onchange="handleStudyAreaChange(this)">
-                                <option selected disabled value="">Select Study Area</option>
-                            </select>
-                        </div>
+    <div class="overlay">
+        
+        <img src="../../images/wildStarLogo.png" class="logo" style="width: 150px;">
+        <img src="../../images/iconLogout.png" class="exit-btn" style="width: 75px;" onclick="goToLogin()">
 
-                        <!-- TIME IN / TIME OUT -->
-                        <div class="time-row">
-
-                            <select id="timeIn" onchange="handleTimeChange('timeIn')">
-                                <option selected disabled value="">Time In</option>
-                                <option value="08:00:00">8:00 AM</option>
-                                <option value="09:00:00">9:00 AM</option>
-                                <option value="10:00:00">10:00 AM</option>
-                                <option value="11:00:00">11:00 AM</option>
-                                <option value="12:00:00">12:00 PM</option>
-                                <option value="13:00:00">1:00 PM</option>
-                                <option value="14:00:00">2:00 PM</option>
-                                <option value="15:00:00">3:00 PM</option>
-                                <option value="16:00:00">4:00 PM</option>
-                                <option value="17:00:00">5:00 PM</option>
-                                <option value="18:00:00">6:00 PM</option>
-                                <option value="19:00:00">7:00 PM</option>
-                            </select>
-
-                            <select id="timeOut" onchange="handleTimeChange('timeOut')">
-                                <option selected disabled value="">Time Out</option>
-                                <option value="09:00:00">9:00 AM</option>
-                                <option value="10:00:00">10:00 AM</option>
-                                <option value="11:00:00">11:00 AM</option>
-                                <option value="12:00:00">12:00 PM</option>
-                                <option value="13:00:00">1:00 PM</option>
-                                <option value="14:00:00">2:00 PM</option>
-                                <option value="15:00:00">3:00 PM</option>
-                                <option value="16:00:00">4:00 PM</option>
-                                <option value="17:00:00">5:00 PM</option>
-                                <option value="18:00:00">6:00 PM</option>
-                                <option value="19:00:00">7:00 PM</option>
-                                <option value="20:00:00">8:00 PM</option>
-                            </select>
-
-                        </div>
-
-                        <!-- SUB AREA TABLE -->
-                        <div class="subarea-container">
-                            <table class="subarea-table">
-                                <tr>
-                                    <th>Sub Areas</th>
-                                </tr>
-                                <tbody id="subAreaTableBody">
-                                    <tr><td>Select a study area and time first.</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <label style="margin-top: 15px;">How many people are accompanying you?</label>
-
-                        <input 
-                            type="number" 
-                            id="companions"
-                            min="0"
-                            max="9"
-                            placeholder="Enter number of companions"
-                            style="margin-top: -10px; width: 290px;"
-                        >
-
-                    </div>
-
-                    <!-- RIGHT SIDE -->
-                    <div class="right-panel">
-
-                        <label style="margin-top: -4px;">Purpose</label>
-                        <textarea placeholder="State your purpose here..." id="purpose"></textarea>
-
-                        <label>ID Numbers</label>
-
-                        <div class="id-section">
-                            <div class="id-row">
-                                <input type="text" placeholder="ID Number 1">
-                                <button class="submit-btn" onclick="validateReservation()">Submit</button>
-                            </div>
-
-                            <input type="text" class="extra-id" placeholder="ID Number 2">
-                            <input type="text" class="extra-id" placeholder="ID Number 3">
-                            <input type="text" class="extra-id" placeholder="ID Number 4">
-                            <input type="text" class="extra-id" placeholder="ID Number 5">
-                            <input type="text" class="extra-id" placeholder="ID Number 6">
-                            <input type="text" class="extra-id" placeholder="ID Number 7">
-                            <input type="text" class="extra-id" placeholder="ID Number 8">
-                            <input type="text" class="extra-id" placeholder="ID Number 9">
-                            <input type="text" class="extra-id" placeholder="ID Number 10">
-                        </div>
-
-                    </div>
-
-                </div>
+        <div style="display: flex; flex-direction: column; position: relative;">
+            
+            <div id="activeResBlocker" class="reservation-blocker">
+                <h2>Active Reservation Found</h2>
+                <p>Our rules allow only one active reservation at a time.</p>
+                <button class="nav-buttons" style="margin-top:20px; width: 200px;">Check Status</button>
             </div>
 
+            <div class="nav-tab">
+                <button class="nav-buttons">History</button>
+                <button class="nav-buttons">Reservation</button>
+            </div>
+
+            <div class="dashboard-card">
+
+                <!-- LEFT PANEL -->
+                <div class="left-panel">
+                    <div class="top-dropdown">
+                        <select id="studyArea" onchange="handleStudyAreaChange(this)">
+                            <option selected disabled value="">Select Study Area</option>
+                        </select>
+                    </div>
+
+                    <div class="time-row">
+                        <select id="timeIn" onchange="handleTimeChange('timeIn')">
+                            <option selected disabled value="">Time In</option>
+                            <option value="08:00:00">8:00 AM</option>
+                            <option value="09:00:00">9:00 AM</option>
+                            <option value="10:00:00">10:00 AM</option>
+                            <option value="11:00:00">11:00 AM</option>
+                            <option value="12:00:00">12:00 PM</option>
+                            <option value="13:00:00">1:00 PM</option>
+                            <option value="14:00:00">2:00 PM</option>
+                            <option value="15:00:00">3:00 PM</option>
+                            <option value="16:00:00">4:00 PM</option>
+                            <option value="17:00:00">5:00 PM</option>
+                            <option value="18:00:00">6:00 PM</option>
+                        </select>
+
+                        <select id="timeOut" onchange="handleTimeChange('timeOut')">
+                            <option selected disabled value="">Time Out</option>
+                            <option value="09:00:00">9:00 AM</option>
+                            <option value="10:00:00">10:00 AM</option>
+                            <option value="11:00:00">11:00 AM</option>
+                            <option value="12:00:00">12:00 PM</option>
+                            <option value="13:00:00">1:00 PM</option>
+                            <option value="14:00:00">2:00 PM</option>
+                            <option value="15:00:00">3:00 PM</option>
+                            <option value="16:00:00">4:00 PM</option>
+                            <option value="17:00:00">5:00 PM</option>
+                            <option value="18:00:00">6:00 PM</option>
+                            <option value="19:00:00">7:00 PM</option>
+                            <option value="20:00:00">8:00 PM</option>
+                        </select>
+                    </div>
+
+                    <div class="subarea-container">
+                        <table class="subarea-table">
+                            <thead><tr><th>Available Sub Areas</th></tr></thead>
+                            <tbody id="subAreaTableBody">
+                                <tr><td>Select study area and time first.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <label style="margin-top: 15px;">How many people are accompanying you?</label>
+                    <input 
+                        type="number" id="companions" min="0" max="9" 
+                        placeholder="Select a sub-area first"
+                        disabled 
+                        oninput="generateIDInputs()"
+                    >
+                </div>
+
+                <!-- RIGHT PANEL -->
+                <div class="right-panel">
+                    <label style="margin-top: -4px;">Purpose</label>
+                    <textarea placeholder="State your purpose here..." id="purpose" oninput="validateForm()"></textarea>
+
+                    <label>Participating IDs</label>
+                    
+                    <div class="id-scroll-window" id="idScrollWindow">
+                        <!-- Default placeholder -->
+                        <p style="color: #ccc; font-size: 12px; text-align: center; margin-top: 20px;">
+                            Select a sub-area to see participants.
+                        </p>
+                    </div>
+
+                    <button class="submit-btn" id="submitBtn" disabled onclick="processReservation()">Submit Reservation</button>
+                </div>
+
+            </div>
         </div>
+    </div>
 
-        <script>
+    <script>
+        let selectedAreaID = null;
+        let selectedTimeIn = null;
+        let selectedTimeOut = null;
+        let selectedResourceID = null;
 
-            // ─── GLOBALS ──────────────────────────────────────────────
-            let selectedAreaID = null;
-            let selectedTimeIn = null;
-            let selectedTimeOut = null;
-            let selectedResourceID = null;
+        document.addEventListener('DOMContentLoaded', () => {
+            checkExistingReservation();
+            loadStudyAreas();
+        });
 
-            // ─── STUDY AREA (filtered by department) ─────────────────
-            async function loadStudyAreas() {
-                try {
-                    const response = await fetch('../../php/get_allowed_areas.php');
-                    const areas = await response.json();
+        async function checkExistingReservation() {
+            try {
+                const response = await fetch('../../php/check_active_res.php');
+                const result = await response.json();
+                if (result.hasActive) document.getElementById('activeResBlocker').style.display = 'flex';
+            } catch (e) { console.warn("Check status skipped (file likely missing)."); }
+        }
 
-                    const select = document.getElementById('studyArea');
+        async function loadStudyAreas() {
+            const response = await fetch('../../php/get_allowed_areas.php');
+            const areas = await response.json();
+            const select = document.getElementById('studyArea');
+            areas.forEach(area => {
+                const opt = document.createElement('option');
+                opt.value = area.areaID; opt.textContent = area.areaName;
+                select.appendChild(opt);
+            });
+        }
 
-                    if (areas.length === 0) {
-                        const option = document.createElement('option');
-                        option.disabled = true;
-                        option.textContent = 'No areas available for your department';
-                        select.appendChild(option);
-                        return;
-                    }
-
-                    areas.forEach(area => {
-                        const option = document.createElement('option');
-                        option.value = area.areaID;
-                        option.textContent = area.areaName;
-                        select.appendChild(option);
-                    });
-
-                } catch (error) {
-                    console.error('Failed to load study areas:', error);
-                }
-            }
-
-            async function handleStudyAreaChange(select) {
-                selectedAreaID = select.value;
-                await tryLoadResources();
-            }
-
-            // ─── TIME ─────────────────────────────────────────────────
-        function handleTimeChange(changedField = null) {
-
-            const timeInSelect = document.getElementById('timeIn');
-            const timeOutSelect = document.getElementById('timeOut');
-
-            // ─── USER CHANGED TIME IN ─────────────────────────────
-            if (changedField === 'timeIn') {
-
-                const selectedIndex = timeInSelect.selectedIndex;
-
-                // TimeOut should always be +1 hour
-                timeOutSelect.selectedIndex = selectedIndex;
-
-            }
-
-            // ─── USER CHANGED TIME OUT ────────────────────────────
-            if (changedField === 'timeOut') {
-
-                const selectedIndex = timeOutSelect.selectedIndex;
-
-                // TimeIn should always be -1 hour
-                timeInSelect.selectedIndex = selectedIndex;
-
-            }
-
-            selectedTimeIn = timeInSelect.value;
-            selectedTimeOut = timeOutSelect.value;
-
+        function handleStudyAreaChange(select) {
+            selectedAreaID = select.value;
             tryLoadResources();
         }
 
-            // ─── ONLY LOAD RESOURCES WHEN ALL 3 ARE SET ───────────────
-            async function tryLoadResources() {
-                if (!selectedAreaID || !selectedTimeIn || !selectedTimeOut) {
-                    document.getElementById('subAreaTableBody').innerHTML =
-                        '<tr><td>Select a study area and time first.</td></tr>';
-                    return;
-                }
+        function handleTimeChange(field) {
+            const tIn = document.getElementById('timeIn');
+            const tOut = document.getElementById('timeOut');
+            if (field === 'timeIn') tOut.selectedIndex = tIn.selectedIndex;
+            if (field === 'timeOut') tIn.selectedIndex = tOut.selectedIndex;
+            selectedTimeIn = tIn.value;
+            selectedTimeOut = tOut.value;
+            tryLoadResources();
+        }
 
-                // Build datetime strings using today's date
-                const today = new Date().toISOString().split('T')[0];
-                const startTime = `${today} ${selectedTimeIn}`;
-                const endTime   = `${today} ${selectedTimeOut}`;
+        async function tryLoadResources() {
+            if (!selectedAreaID || !selectedTimeIn || !selectedTimeOut) return;
+            const today = new Date().toISOString().split('T')[0];
+            const start = `${today} ${selectedTimeIn}`;
+            const end = `${today} ${selectedTimeOut}`;
 
-                await loadResources(selectedAreaID, startTime, endTime);
-            }
+            const url = `../../php/get_available_resources.php?areaID=${selectedAreaID}&startTime=${encodeURIComponent(start)}&endTime=${encodeURIComponent(end)}`;
+            const response = await fetch(url);
+            const resources = await response.json();
 
-            async function loadResources(areaID, startTime, endTime) {
-                try {
-                    const url = `../../php/get_available_resources.php?areaID=${areaID}&startTime=${encodeURIComponent(startTime)}&endTime=${encodeURIComponent(endTime)}`;
-                    const response = await fetch(url);
-                    const resources = await response.json();
-
-                    const tbody = document.getElementById('subAreaTableBody');
-                    tbody.innerHTML = '';
-
-                    if (resources.length === 0) {
-                        tbody.innerHTML = '<tr><td>No available sub areas for this time slot.</td></tr>';
-                        return;
-                    }
-
-                    resources.forEach(resource => {
-
-                    const tr = document.createElement('tr');
-
-                    tr.innerHTML = `
-                        <td 
-                            style="cursor:pointer;"
-                            onclick="selectResource(
-                                ${resource.resourceID},
-                                ${resource.minCapacity},
-                                ${resource.maxCapacity},
-                                this
-                            )"
-                        >
-                            ${resource.resourceName}
-                        </td>
-                    `;
-
-                    tbody.appendChild(tr);
-                });
-
-                } catch (error) {
-                    console.error('Failed to load resources:', error);
-                }
-            }
-
-            function selectResource(resourceID, minCapacity, maxCapacity, element) {
-
-            selectedResourceID = resourceID;
-
-            // ─── REMOVE PREVIOUS HIGHLIGHT ─────────────────────
-            document.querySelectorAll('.subarea-table td').forEach(td => {
-                td.style.backgroundColor = '';
-                td.style.color = '';
-            });
-
-            // ─── HIGHLIGHT SELECTED RESOURCE ───────────────────
-            element.style.backgroundColor = '#ffb300';
-            element.style.color = '#7a0000';
-
-            // ─── UPDATE COMPANION INPUT ────────────────────────
-            const companionsInput = document.getElementById('companions');
-
-            companionsInput.min = minCapacity;
-            companionsInput.max = maxCapacity;
-
-            companionsInput.placeholder =
-                `Allowed: ${minCapacity} - ${maxCapacity} companions`;
-
-            // ─── FORCE VALUE TO MATCH NEW MINIMUM ─────────────────
-            let currentValue = parseInt(companionsInput.value);
-
-            // ─── CURRENT USER COUNTS AS 1 PERSON ─────────────────
-            const requiredMinCompanions = Math.max(minCapacity - 1, 0);
-            const allowedMaxCompanions = Math.max(maxCapacity - 1, 0);
-
-            if (
-                isNaN(currentValue) ||
-                currentValue < requiredMinCompanions
-            ) {
-                currentValue = requiredMinCompanions;
-            }
-
-            if (currentValue > allowedMaxCompanions) {
-                currentValue = allowedMaxCompanions;
-            }
-
-            companionsInput.value = currentValue;
-
-            // Update actual input limits
-            companionsInput.min = requiredMinCompanions;
-            companionsInput.max = allowedMaxCompanions;
-
-            companionsInput.placeholder =
-                `Allowed companions: ${requiredMinCompanions} - ${allowedMaxCompanions}`;
-
-            // ─── UPDATE VISIBLE ID INPUTS ─────────────────────────
-            const extraInputs = document.querySelectorAll(".extra-id");
-
-            extraInputs.forEach((input, index) => {
-
-                // Show only required companion IDs
-                input.style.display = index < currentValue ? "block" : "none";
-
-                // Clear hidden inputs
-                if (index >= currentValue) {
-                    input.value = "";
-                }
+            const tbody = document.getElementById('subAreaTableBody');
+            tbody.innerHTML = '';
+            resources.forEach(res => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td onclick="selectResource(${res.resourceID}, ${res.minCapacity}, ${res.maxCapacity}, this)">${res.resourceName}</td>`;
+                tbody.appendChild(tr);
             });
         }
 
-            // ─── INIT ─────────────────────────────────────────────────
-        document.addEventListener('DOMContentLoaded', () => {
+        function selectResource(id, min, max, el) {
+            selectedResourceID = id;
+            document.querySelectorAll('.subarea-table td').forEach(td => td.style.cssText = "");
+            el.style.backgroundColor = '#ffb300';
+            el.style.color = '#7a0000';
 
-            loadStudyAreas();
+            const compInput = document.getElementById('companions');
+            
+            // Logic for "Stations" (min 1, max 1)
+            const minCompanions = Math.max(0, min - 1);
+            const maxCompanions = Math.max(0, max - 1);
 
-            handleTimeChange();
+            compInput.min = minCompanions;
+            compInput.max = maxCompanions;
+            compInput.value = minCompanions;
+            
+            // Disable if it's a 1-person station
+            compInput.disabled = (maxCompanions === 0);
+            compInput.placeholder = maxCompanions === 0 ? "Solo Station Selected" : `Enter ${minCompanions}-${maxCompanions} companions`;
+            
+            generateIDInputs();
+        }
 
-            // ─── COMPANIONS ───────────────────────────────────────
-            const companionsInput = document.getElementById("companions");
-            const extraInputs = document.querySelectorAll(".extra-id");
+        function generateIDInputs() {
+            const container = document.getElementById('idScrollWindow');
+            const count = parseInt(document.getElementById('companions').value) || 0;
+            container.innerHTML = '';
 
-            companionsInput.addEventListener("input", () => {
+            // 1. Always show the Logged-in User
+            const userTag = document.createElement('div');
+            userTag.className = 'self-id-tag';
+            userTag.innerHTML = `Participant 1 <span>(YOU - LOGGED IN)</span>`;
+            container.appendChild(userTag);
 
-                let count = parseInt(companionsInput.value);
+            // 2. Generate inputs for companions
+            for (let i = 0; i < count; i++) {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.placeholder = `Companion ID Number ${i + 1}`;
+                input.className = 'companion-id-field';
+                input.style.marginTop = "5px";
+                input.oninput = validateForm;
+                container.appendChild(input);
+            }
+            validateForm();
+        }
 
-                if (isNaN(count) || count < 0) count = 0;
-
-                extraInputs.forEach((input, index) => {
-                    input.style.display = index < count ? "block" : "none";
-                });
-
-            });
-
-        });
-
-            function goToLogin() {
-                window.location.href = "../loginScreen/Login.html";
-            }   
-
-            async function validateReservation() {
-
-            // ─── GET VALUES ─────────────────────────────────────
-            const studyArea = document.getElementById('studyArea').value;
-            const timeIn = document.getElementById('timeIn').value;
-            const timeOut = document.getElementById('timeOut').value;
-            const companions = parseInt(document.getElementById('companions').value) || 0;
+        function validateForm() {
             const purpose = document.getElementById('purpose').value.trim();
+            const idFields = document.querySelectorAll('.companion-id-field');
+            
+            let allIDsFilled = true;
+            idFields.forEach(f => { if(!f.value.trim()) allIDsFilled = false; });
 
-            // Main ID field
-            const mainID = document.querySelector('.id-row input').value.trim();
+            // Purpose must be at least 5 characters
+            const isValid = (selectedResourceID && selectedTimeIn && purpose.length >= 5 && allIDsFilled);
+            document.getElementById('submitBtn').disabled = !isValid;
+        }
 
-            // Extra ID fields
-            const extraInputs = document.querySelectorAll('.extra-id');
-
-            // ─── CHECK REQUIRED FIELDS ──────────────────────────
-            if (!studyArea) {
-                alert("Please select a study area.");
-                return;
-            }
-
-            if (!timeIn || !timeOut) {
-                alert("Please select time in and time out.");
-                return;
-            }
-
-            if (!selectedResourceID) {
-                alert("Please select a sub area.");
-                return;
-            }
-
-            if (!purpose) {
-                alert("Please enter your purpose.");
-                return;
-            }
-
-            if (!mainID) {
-                alert("Please enter ID Number 1.");
-                return;
-            }
-
-            // ─── CHECK COMPANION IDS ────────────────────────────
-            // companions = accompanying people only
-            // so required IDs = companions count
-
-            let filledExtraIDs = 0;
-
-            for (let i = 0; i < companions; i++) {
-
-                const value = extraInputs[i].value.trim();
-
-                if (!value) {
-                    alert(`Please fill ID Number ${i + 2}.`);
-                    return;
-                }
-
-                filledExtraIDs++;
-            }
-
-            // ─── CHECK IF TOO MANY IDS FILLED ───────────────────
-            for (let i = companions; i < extraInputs.length; i++) {
-
-                if (extraInputs[i].value.trim() !== '') {
-                    alert(
-                        `You entered more ID numbers than the number of companions.`
-                    );
-                    return;
-                }
-            }
-
-                        // ─── COLLECT ALL IDS ─────────────────────────────
-            const idNumbers = [mainID];
-
-            for (let i = 0; i < companions; i++) {
-                idNumbers.push(extraInputs[i].value.trim());
-            }
-
-            // ─── VALIDATE IDS IN DATABASE ───────────────────
-            try {
-
-                const response = await fetch('../../php/validate_ids.php', {
+        async function processReservation() {
+            const companionIDs = Array.from(document.querySelectorAll('.companion-id-field')).map(f => f.value.trim());
+            
+            // Validate companion IDs (if any)
+            if (companionIDs.length > 0) {
+                const valRes = await fetch('../../php/validate_ids.php', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        idNumbers: idNumbers
-                    })
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ idNumbers: companionIDs })
                 });
-
-                const result = await response.json();
-
-                if (!result.success) {
-
-                    alert(
-                        `These ID numbers do not exist:\n\n${result.invalidIDs.join('\n')}`
-                    );
-
+                const valData = await valRes.json();
+                if (!valData.success) {
+                    alert("Invalid Companion IDs: " + valData.invalidIDs.join(", "));
                     return;
                 }
-
-            } catch (error) {
-
-                console.error(error);
-
-                alert("Failed to validate ID numbers.");
-
-                return;
             }
 
-            // ─── SUBMIT RESERVATION ─────────────────────────────
-try {
+            const today = new Date().toISOString().split('T')[0];
+            const payload = {
+                resourceID: selectedResourceID,
+                purpose: document.getElementById('purpose').value,
+                startTime: `${today} ${selectedTimeIn}`,
+                endTime: `${today} ${selectedTimeOut}`,
+                numParticipants: companionIDs.length + 1
+            };
 
-    const today = new Date().toISOString().split('T')[0];
-
-    const startTime = `${today} ${timeIn}`;
-    const endTime = `${today} ${timeOut}`;
-
-    const response = await fetch('../../php/reservation.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            resourceID: selectedResourceID,
-            purpose: purpose,
-            startTime: startTime,
-            endTime: endTime,
-            numParticipants: companions + 1
-        })
-    });
-
-            // ─── SAFE RESPONSE HANDLING ─────────────────────
-            const text = await response.text();
-            console.log("RAW RESPONSE:", text);
-
-            let result;
-            try {
-                result = JSON.parse(text);
-            } catch (e) {
-                alert("Server returned invalid response. Check console.");
-                return;
-            }
-
-            if (result.success) {
-                alert("Reservation submitted successfully!");
+            const res = await fetch('../../php/reservation.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(payload)
+            });
+            const result = await res.json();
+            
+            if(result.success) {
+                alert("Reservation successful!");
+                location.reload();
             } else {
                 alert(result.message);
             }
-
-        } catch (error) {
-            console.error(error);
-            alert("Failed to submit reservation.");
-        }
         }
 
-        </script>
-
-    </body>
-    </html> 
+        function goToLogin() { window.location.href = "../loginScreen/Login.html"; }
+    </script>
+</body>
+</html>
