@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 11, 2026 at 02:41 PM
+-- Generation Time: May 17, 2026 at 04:55 AM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -326,8 +326,9 @@ CREATE TABLE `tbluser` (
 --
 
 INSERT INTO `tbluser` (`userID`, `departmentID`, `firstName`, `lastName`, `email`, `password`, `blocked_until`, `user_type`) VALUES
-(112222333, 'CCS', 'Test', 'Admin', 'admin@gmail.com', '123', '0000-00-00 00:00:00', 'Admin'),
-(445555666, 'CEA', 'Test', 'Patron', 'patron@gmail.com', '456', '0000-00-00 00:00:00', 'Patron');
+(112222333, 'CMBA', 'John Francis', 'Rebusit', 'johnfrancis.rebusit@cit.edu', '$2y$10$IxfwqBDZb5S1PzOWSU.f6ei7MVV2r715s2jJmkqxJ8ABwxImhUfpi', NULL, 'Patron'),
+(112222444, 'CASE', 'Wild Kitty', 'Pryde', 'wildkittty.pryde@cit.edu', '$2y$10$4la/PEvfSfX1llhjW8Z.0./q0qFJQBPV1wHVdhdLqB43.RMwl1Jd6', NULL, 'Patron'),
+(220374211, 'CCS', 'John Lawrence', 'Rebusit', 'juanlorenzo.rebusit@gmail.com', '$2y$10$NJhxq4Ugm11eXyqLJIqzee4w9zEpKHCWOgVJwUx4wUrDFC/w7lc9m', NULL, 'Admin');
 
 --
 -- Indexes for dumped tables
