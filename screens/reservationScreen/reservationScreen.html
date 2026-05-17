@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+
+    <link rel="stylesheet" href="reservationScreen.css">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
+    <style>
+        .id-scroll-window {
+            width: 100%;
+            max-height: 200px;
+            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            border-radius: 14px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        /* Styling for the User's own ID (non-editable) */
+        .self-id-tag {
+            background: rgba(255, 179, 0, 0.15);
+            border: 2px solid #ffb300;
+            color: #ffb300;
+            padding: 12px 18px;
+            border-radius: 14px;
+            font-size: 13px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .self-id-tag span { font-size: 10px; opacity: 0.8; }
+
+        .id-scroll-window::-webkit-scrollbar { width: 6px; }
+        .id-scroll-window::-webkit-scrollbar-thumb {
+            background: #ffb300;
+            border-radius: 10px;
+        }
+
+        .submit-btn:disabled {
+            background: #555 !important;
+            color: #999 !important;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none;
+        }
+
+        input:disabled, select:disabled {
+            background: #ddd !important;
+            cursor: not-allowed;
+        }
+
+        .reservation-blocker {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            display: none; 
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            border-radius: 22px;
+            text-align: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+
+<body style="background: linear-gradient(rgba(145,49,49,0.55), rgba(145,49,49,0.55)), url('../../images/backgroundGlobal.png');">
+
+    <div class="overlay">
+        
+        <img src="../../images/wildStarLogo.png" class="logo" style="width: 150px;">
+        <img src="../../images/iconLogout.png" class="exit-btn" style="width: 75px;" onclick="goToLogin()">
+
+        <div style="display: flex; flex-direction: column; position: relative;">
+            
+            <!-- Updated Nav Tabs -->
+            <div class="nav-tab">
+                <button class="nav-buttons" onclick="window.location.href='../userDashboardScreen/userDashboardScreen.html'">Dashboard</button>
+                <button class="nav-buttons" style="background:white; color:#7a0000;">Reserve</button>
+            </div>
+
+            <div class="dashboard-card">
+
+                <!-- LEFT PANEL -->
+                <div class="left-panel">
+                    <div class="top-dropdown">
+                        <select id="studyArea" onchange="handleStudyAreaChange(this)">
+                            <option selected disabled value="">Select Study Area</option>
+                        </select>
+                    </div>
+
+                    <div class="time-row">
+                        <select id="timeIn" onchange="handleTimeChange('timeIn')">
+                            <option selected disabled value="">Time In</option>
+                            <option value="08:00:00">8:00 AM</option>
+                            <option value="09:00:00">9:00 AM</option>
+                            <option value="10:00:00">10:00 AM</option>
+                            <option value="11:00:00">11:00 AM</option>
+                            <option value="12:00:00">12:00 PM</option>
+                            <option value="13:00:00">1:00 PM</option>
+                            <option value="14:00:00">2:00 PM</option>
+                            <option value="15:00:00">3:00 PM</option>
+                            <option value="16:00:00">4:00 PM</option>
+                            <option value="17:00:00">5:00 PM</option>
+                            <option value="18:00:00">6:00 PM</option>
+                            <option value="19:00:00">7:00 PM</option>
+                        </select>
+
+                        <select id="timeOut" onchange="handleTimeChange('timeOut')">
+                            <option selected disabled value="">Time Out</option>
+                            <option value="09:00:00">9:00 AM</option>
+                            <option value="10:00:00">10:00 AM</option>
+                            <option value="11:00:00">11:00 AM</option>
+                            <option value="12:00:00">12:00 PM</option>
+                            <option value="13:00:00">1:00 PM</option>
+                            <option value="14:00:00">2:00 PM</option>
+                            <option value="15:00:00">3:00 PM</option>
+                            <option value="16:00:00">4:00 PM</option>
+                            <option value="17:00:00">5:00 PM</option>
+                            <option value="18:00:00">6:00 PM</option>
+                            <option value="19:00:00">7:00 PM</option>
+                            <option value="20:00:00">8:00 PM</option>
+                        </select>
+                    </div>
+
+                    <div class="subarea-container">
+                        <table class="subarea-table">
+                            <thead><tr><th>Available Sub Areas</th></tr></thead>
+                            <tbody id="subAreaTableBody">
+                                <tr><td>Select study area and time first.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <label style="margin-top: 15px;">How many people are accompanying you?</label>
+                    <input
+                        type="number" id="companions" min="0" max="9"
+                        placeholder="Select a sub-area first"
+                        disabled
+                        oninput="generateIDInputs()"
+                    >
+                </div>
+
+                <!-- RIGHT PANEL -->
+                <div class="right-panel">
+                    <label style="margin-top: -4px;">Purpose</label>
+                    <textarea placeholder="What is the purpose for your reservation? (Max 200 chars)" id="purpose" maxlength="200" oninput="validateForm()"></textarea>
+
+                    <label>Participating IDs</label>
+                    
+                    <div class="id-scroll-window" id="idScrollWindow">
+                        <!-- Default placeholder -->
+                        <p style="color: #ccc; font-size: 12px; text-align: center; margin-top: 20px;">
+                            Select a sub-area to see participants.
+                        </p>
+                    </div>
+
+                    <button class="submit-btn" id="submitBtn" disabled onclick="processReservation()">Submit Reservation</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedAreaID = null;
+        let selectedTimeIn = null;
+        let selectedTimeOut = null;
+        let selectedResourceID = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            checkExistingReservation();
+            loadStudyAreas();
+            filterPastTimeSlots();
+        });
+
+        function filterPastTimeSlots() {
+            const now = new Date();
+            const currentHour = now.getHours();
+
+            const timeInSelect = document.getElementById('timeIn');
+            const timeOutSelect = document.getElementById('timeOut');
+
+            // Helper to process a select element
+            const disableOptions = (selectElement) => {
+                Array.from(selectElement.options).forEach(option => {
+                    if (!option.value) return; // Skip the "Select Time" placeholder
+
+                    // Extract the hour from the value (e.g., "09:00:00" -> 9)
+                    const optionHour = parseInt(option.value.split(':')[0]);
+
+                    // Logic: Disable if the hour has already passed.
+                    // If you want to be strict: if it's 9:01 AM, the 9:00 AM slot is gone.
+                    if (optionHour <= currentHour) {
+                        option.disabled = true;
+                        option.style.color = '#ccc'; // Visual hint that it's disabled
+                    }
+                });
+            };
+
+            disableOptions(timeInSelect);
+            disableOptions(timeOutSelect);
+        }
+
+        async function checkExistingReservation() {
+            try {
+                const response = await fetch('../../php/check_active_res.php');
+                const result = await response.json();
+                if (result.hasActive) document.getElementById('activeResBlocker').style.display = 'flex';
+            } catch (e) { console.warn("Check status skipped (file likely missing)."); }
+        }
+
+        async function loadStudyAreas() {
+            const response = await fetch('../../php/get_allowed_areas.php');
+            const areas = await response.json();
+            const select = document.getElementById('studyArea');
+            areas.forEach(area => {
+                const opt = document.createElement('option');
+                opt.value = area.areaID; opt.textContent = area.areaName;
+                select.appendChild(opt);
+            });
+        }
+
+        function handleStudyAreaChange(select) {
+            selectedAreaID = select.value;
+            tryLoadResources();
+        }
+
+        function handleTimeChange(field) {
+            const tIn = document.getElementById('timeIn');
+            const tOut = document.getElementById('timeOut');
+            if (field === 'timeIn') tOut.selectedIndex = tIn.selectedIndex;
+            if (field === 'timeOut') tIn.selectedIndex = tOut.selectedIndex;
+            selectedTimeIn = tIn.value;
+            selectedTimeOut = tOut.value;
+            tryLoadResources();
+        }
+
+        async function tryLoadResources() {
+            if (!selectedAreaID || !selectedTimeIn || !selectedTimeOut) return;
+            const today = new Date().toISOString().split('T')[0];
+            const start = `${today} ${selectedTimeIn}`;
+            const end = `${today} ${selectedTimeOut}`;
+
+            const url = `../../php/get_available_resources.php?areaID=${selectedAreaID}&startTime=${encodeURIComponent(start)}&endTime=${encodeURIComponent(end)}`;
+            const response = await fetch(url);
+            const resources = await response.json();
+
+            const tbody = document.getElementById('subAreaTableBody');
+            tbody.innerHTML = '';
+            resources.forEach(res => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td onclick="selectResource(${res.resourceID}, ${res.minCapacity}, ${res.maxCapacity}, this)">${res.resourceName}</td>`;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function selectResource(id, min, max, el) {
+            selectedResourceID = id;
+            document.querySelectorAll('.subarea-table td').forEach(td => td.style.cssText = "");
+            el.style.backgroundColor = '#ffb300';
+            el.style.color = '#7a0000';
+
+            const compInput = document.getElementById('companions');
+            
+            // Logic for "Stations" (min 1, max 1)
+            const minCompanions = Math.max(0, min - 1);
+            const maxCompanions = Math.max(0, max - 1);
+
+            compInput.min = minCompanions;
+            compInput.max = maxCompanions;
+            compInput.value = minCompanions;
+            
+            // Disable if it's a 1-person station
+            compInput.disabled = (maxCompanions === 0);
+            compInput.placeholder = maxCompanions === 0 ? "Solo Station Selected" : `Enter ${minCompanions}-${maxCompanions} companions`;
+            
+            generateIDInputs();
+        }
+
+        function generateIDInputs() {
+            const container = document.getElementById('idScrollWindow');
+            const count = parseInt(document.getElementById('companions').value) || 0;
+            container.innerHTML = '';
+
+            // 1. Always show the Logged-in User
+            const userTag = document.createElement('div');
+            userTag.className = 'self-id-tag';
+            userTag.innerHTML = `Participant 1 <span>(YOU - LOGGED IN)</span>`;
+            container.appendChild(userTag);
+
+            // 2. Generate inputs for companions
+            for (let i = 0; i < count; i++) {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.placeholder = `Companion ID Number ${i + 1}`;
+                input.className = 'companion-id-field';
+                input.style.marginTop = "5px";
+                input.oninput = validateForm;
+                container.appendChild(input);
+            }
+            validateForm();
+        }
+
+        function validateForm() {
+            const purpose = document.getElementById('purpose').value.trim();
+            const idFields = document.querySelectorAll('.companion-id-field');
+            
+            let allIDsFilled = true;
+            idFields.forEach(f => { if(!f.value.trim()) allIDsFilled = false; });
+
+            // Purpose must be at least 5 characters
+            const isValid = (selectedResourceID && selectedTimeIn && purpose.length >= 5 && allIDsFilled);
+            document.getElementById('submitBtn').disabled = !isValid;
+        }
+
+        async function processReservation() {
+            const companionIDs = Array.from(document.querySelectorAll('.companion-id-field')).map(f => f.value.trim());
+            
+            // Validate companion IDs (if any)
+            if (companionIDs.length > 0) {
+                const valRes = await fetch('../../php/validate_ids.php', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ idNumbers: companionIDs })
+                });
+                const valData = await valRes.json();
+                if (!valData.success) {
+                    alert("Invalid Companion IDs: " + valData.invalidIDs.join(", "));
+                    return;
+                }
+            }
+
+            const today = new Date().toISOString().split('T')[0];
+            const payload = {
+                resourceID: selectedResourceID,
+                purpose: document.getElementById('purpose').value,
+                startTime: `${today} ${selectedTimeIn}`,
+                endTime: `${today} ${selectedTimeOut}`,
+                numParticipants: companionIDs.length + 1
+            };
+
+            const res = await fetch('../../php/reservation.php', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(payload)
+            });
+            const result = await res.json();
+            
+            if(result.success) {
+                alert("Reservation successful!");
+                location.href = "../userDashboardScreen/userDashboardScreen.html";
+            } else {
+                alert(result.message);
+            }
+        }
+
+        function goToLogin() { window.location.href = "../loginScreen/Login.html"; }
+    </script>
+</body>
+</html>
