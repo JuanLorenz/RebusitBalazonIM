@@ -151,7 +151,7 @@
                 <!-- RIGHT PANEL -->
                 <div class="right-panel">
                     <label style="margin-top: -4px;">Purpose</label>
-                    <textarea placeholder="What is the purpose for your reservation? (Max 200 chars)" id="purpose" maxlength="200" oninput="validateForm()"></textarea>
+                    <textarea placeholder="State your purpose (Max 200 chars)" id="purpose" maxlength="200" oninput="validateForm()"></textarea>
 
                     <label>Participating IDs</label>
                     
@@ -179,10 +179,12 @@
             checkExistingReservation();
             loadStudyAreas();
             filterPastTimeSlots();
+
+            setInterval(filterPastTimeSlots, 60000);
         });
 
         function filterPastTimeSlots() {
-            const now = new Date();
+            const now = new Date(2026, 4, 17, 19, 15, 0, 0);
             const currentHour = now.getHours();
 
             const timeInSelect = document.getElementById('timeIn');
@@ -237,7 +239,19 @@
             const tIn = document.getElementById('timeIn');
             const tOut = document.getElementById('timeOut');
             if (field === 'timeIn') tOut.selectedIndex = tIn.selectedIndex;
-            if (field === 'timeOut') tIn.selectedIndex = tOut.selectedIndex;
+            if (field === 'timeOut') {
+                const selectedIndex = tOut.selectedIndex;
+                const targetIn = tIn.options[selectedIndex];
+
+                if (targetIn && targetIn.disabled) {
+                    alert("The start time for this slot has already passed.");
+                    tOut.selectedIndex = 0; // Reset to placeholder
+                    tIn.selectedIndex = 0;
+                } else {
+                    // Sync Time In to match the selected Time Out
+                    tIn.selectedIndex = selectedIndex;
+                }
+            }
             selectedTimeIn = tIn.value;
             selectedTimeOut = tOut.value;
             tryLoadResources();

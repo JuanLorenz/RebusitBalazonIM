@@ -45,7 +45,7 @@
         .dashboard-card {
             width: 1000px;
             max-width: 95%;
-            min-height: 700px;
+            min-height: 710px;
             display: flex;
             padding: 45px;
             flex-direction: column;
@@ -600,7 +600,7 @@
 
             if (isBlocked) {
                 errorDiv.textContent =
-                    "UNABLE TO RESERVE: ACCOUNT BLOCKED UNTIL "
+                    "Unable to reserve. Your account is blocked until "
                     + formatDateTime(blockedUntil);
                 errorDiv.style.color = "#ffcfcf";
                 setTimeout(() => { errorDiv.textContent = "";}, 1500);
@@ -613,7 +613,7 @@
             // ==============================================
             if (!canReserve) {
                 errorDiv.textContent =
-                    "UNABLE TO RESERVE: YOU HAVE AN ONGOING RESERVATION.";
+                    "Unable to reserve. You have an ongoing reservation.";
                 errorDiv.style.color = "#ffcfcf";
                 setTimeout(() => { errorDiv.textContent = "";}, 1500);
                 return;
