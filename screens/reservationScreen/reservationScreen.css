@@ -80,18 +80,12 @@ body{
 .dashboard-card{
     width: 1150px;
     max-width: 95%;
-
     min-height: 650px;
-
     background: rgba(120, 0, 0, 0.88);
-
     border-radius: 22px;
-
     padding: 45px;
-
     display: flex;
     gap: 50px;
-
     box-shadow: 0 0 20px rgba(0,0,0,0.5);
 }
 
