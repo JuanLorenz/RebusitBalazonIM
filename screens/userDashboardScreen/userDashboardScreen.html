@@ -4,516 +4,167 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Wildcat Reservations</title>
-
-    <link rel="stylesheet" href="userDashboardScreen.css">
     <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
-
     <style>
-        /* ======================================================
-           GLOBAL / PAGE
-        ======================================================= */
+        * { box-sizing: border-box; font-family: 'Archivo Black', sans-serif; }
 
         body {
-            height: 100vh;
-            background:
-                linear-gradient(
-                    rgba(145, 49, 49, 0.55),
-                    rgba(145, 49, 49, 0.55)
-                ),
-                url('../../images/backgroundGlobal.png');
+            margin: 0;
+            background: linear-gradient(rgba(145, 49, 49, 0.55), rgba(145, 49, 49, 0.55)), url('../../images/backgroundGlobal.png');
+            background-size: cover;
         }
 
+        /* ── Overlay: mirrors reservationScreen ── */
         .overlay {
-            height: 100vh;
+            width: 100%;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center;
-            padding: 20px;
+            align-items: flex-start;;
+            padding: 40px 20px;
+            position: relative;
         }
 
-        /* ======================================================
-           MAIN DASHBOARD LAYOUT
-        ======================================================= */
-
-        .dashboard-wrapper {
-            display: flex;
-            flex-direction: column;
-            width: 1000px;
-            max-width: 95%;
+        /* Logo & logout pinned to corners, same as reservation screen */
+        .logo {
+            width: 150px;
+            position: absolute;
+            top: 20px;
+            left: 30px;
         }
-
-        .dashboard-card {
-            width: 1000px;
-            max-width: 95%;
-            min-height: 710px;
-            display: flex;
-            padding: 45px;
-            flex-direction: column;
-            gap: 0;
-            padding: 30px 45px;
-        }
-
-        /* ======================================================
-           NAVIGATION
-        ======================================================= */
 
         .exit-btn {
-            width: 75px !important;
+            width: 75px;
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .exit-btn:hover { transform: scale(1.05); }
+
+        /* ── Center column ── */
+        .center-column {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            width: 1000px;
+            max-width: 95%;
         }
 
+        .nav-tab { display: flex; gap: 10px; margin-bottom: 10px; }
         .nav-buttons {
             color: #7a0000;
             background-color: #ffb300;
             border-radius: 20px;
-            min-height: 10px;
-            width: 180px; /* Increased from 120px */
-            padding: 8px;
+            width: 180px;
+            padding: 10px;
             border: none;
             cursor: pointer;
-            font-size: 14px;
             transition: 0.2s;
         }
+        .nav-buttons:hover { background: #ffd000; transform: scale(1.03); }
 
-        .nav-buttons:hover{
-            background: #ffd000;
-            transform: scale(1.03);
-        }
-
-        /* ======================================================
-           SEARCH
-        ======================================================= */
-
-        .search-container {
-            display: flex;
-            margin-bottom: 10px;
-        }
-
-        .search-bar {
+        /* ── Dashboard card ── */
+        .dashboard-card {
             width: 100%;
-            height: 40px;
-            padding: 0 15px;
-            font-size: 13px;
-            border-radius: 20px;
-            border: 1px solid #ccc;
-        }
-
-        /* ======================================================
-           SECTION LABELS
-        ======================================================= */
-
-        .section-label {
-            display: block;
-            margin-top: 5px;
-            margin-bottom: 5px;
-            color: white;
-            font-size: 16px;
-        }
-
-        /* ======================================================
-           ACTIVE RESERVATION
-        ======================================================= */
-
-        .active-res-box {
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: white;
-            padding: 20px 30px;
-            border-radius: 15px;
-            border-left: 15px solid #ffb300;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-            margin-bottom: 20px;
-        }
-
-        .active-res-box h2 {
-            margin: 0;
-            font-size: 24px !important;
-        }
-
-        .active-res-box p {
-            margin-top: 5px;
-            font-size: 14px !important;
-        }
-
-        .active-res-box.empty {
-            justify-content: center;
-            padding: 40px;
-            background: rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.7);
-            border: 2px dashed rgba(255, 255, 255, 0.3);
-            border-left: none;
-        }
-
-        .active-res-box:not(.empty) {
-            cursor: pointer;
-            transition:
-                transform 0.2s ease,
-                box-shadow 0.2s ease;
-        }
-
-        .active-res-box:not(.empty):hover {
-            transform: translateY(-3px);
-            background: #fffdf8;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        /* ======================================================
-           HISTORY TABLE
-        ======================================================= */
-
-        .history-container {
-            height: 265px;
-            display: block;
-            overflow-y: auto;
-            margin-bottom: 5px;
-            background: white;
-            border-radius: 15px;
-            border: 1px solid #000;
-        }
-
-        .history-table {
-            width: 100%;
-            table-layout: fixed;
-            border-collapse: collapse;
-        }
-
-        .history-table tr {
-            height: 53px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .history-table tr:hover {
-            cursor: pointer;
-            background: #fff8e1;
-        }
-
-        .history-table td {
-            padding: 0 15px;
-            vertical-align: middle;
-            color: #333;
-            font-size: 13px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        /* ======================================================
-           SCROLLBARS
-        ======================================================= */
-
-        .history-container::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .history-container::-webkit-scrollbar-thumb {
-            background: #ffb300;
-            border-radius: 10px;
-        }
-
-        .purpose-detail-box::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .purpose-detail-box::-webkit-scrollbar-thumb {
-            background: #ffb300;
-            border-radius: 10px;
-        }
-
-        /* ======================================================
-           STATUS TAGS
-        ======================================================= */
-
-        .status-tag {
-            padding: 4px 8px;
-            font-size: 9px;
-            font-weight: bold;
-            text-transform: uppercase;
-            border-radius: 5px;
-            border: 1px solid #000;
-        }
-
-        .COMPLETED {
-            background: #d4f5e2;
-            color: #1a7a45;
-        }
-
-        .NOSHOW {
-            background: #fde8e8;
-            color: #8b1a1a;
-        }
-
-        .CANCELLED {
-            background: #eee;
-            color: #666;
-        }
-
-        /* ======================================================
-           PAGINATION
-        ======================================================= */
-
-        .pagination {
-            display: flex;
-            justify-content: center;
-            gap: 4px;
-            margin-bottom: 10px;
-        }
-
-        .page-btn {
-            padding: 8px 15px;
-            background: #ffb300;
-            color: #7a0000;
-            font-size: 12px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-        }
-
-        .page-btn.active {
-            background: white;
-            color: #7a0000;
-            border: 2px solid #ffb300;
-        }
-
-        .page-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        /* ======================================================
-           BUTTONS
-        ======================================================= */
-
-        .main-res-btn {
-            width: 420px;
-            height: 50px;
-            background: #ffb300;
-            color: #7a0000;
-            font-size: 22px;
-            text-transform: uppercase;
-            border: none;
-            border-radius: 38px;
-            cursor: pointer;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-            transition: 0.2s ease;
-        }
-
-        .main-res-btn:disabled {
-            background: #555;
-            color: #aaa;
-            cursor: not-allowed;
-            box-shadow: none;
-        }
-
-        /* ======================================================
-           MODAL
-        ======================================================= */
-
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            background: rgba(0, 0, 0, 0.85);
-            z-index: 5000;
-        }
-
-        .modal-card {
-            width: 650px;
-            padding: 35px;
-            background: white;
+            background: rgba(145, 49, 49, 0.9);
             border-radius: 22px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            min-height: 600px;
         }
 
-        .modal-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            column-gap: 30px;
-            row-gap: 15px;
-            margin-bottom: 25px;
-        }
+        .search-bar { width: 100%; height: 45px; padding: 0 15px; border-radius: 20px; border: none; margin-bottom: 20px; }
+        .section-label { color: white; margin-bottom: 10px; display: block; }
 
-        .modal-item b {
-            display: block;
-            color: #7a0000;
-            font-size: 12px;
-            text-transform: uppercase;
-        }
+        .active-res-box { background: white; padding: 20px; border-radius: 15px; border-left: 15px solid #ffb300; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .history-container { height: 250px; overflow-y: auto; background: white; border-radius: 15px; margin-bottom: 20px; }
+        .history-table { width: 100%; border-collapse: collapse; }
+        .history-table td { padding: 15px; border-bottom: 1px solid #eee; cursor: pointer; }
 
-        .modal-item p {
-            margin-top: 2px;
-            color: #333;
-            font-size: 15px;
-            line-height: 1.4;
-            white-space: normal;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-        }
+        .modal-overlay { position: fixed; top:0; left:0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 5000; }
+        .modal-card { width: 600px; background: white; padding: 30px; border-radius: 20px; }
 
-        .purpose-detail-box {
-            max-height: 100px;
-            overflow-y: auto;
-            margin-top: 5px;
-            padding-left: 10px;
-            padding-right: 8px;
-            border-left: 3px solid #ffb300;
-        }
+        .action-status { text-align: center; color: #ffd000; font-size: 14px; margin-top: 10px; height: 20px; }
     </style>
 </head>
 
 <body>
     <div class="overlay">
-        <img src="../../images/wildStarLogo.png" class="logo" style="width: 150px;">
-        <img src="../../images/iconLogout.png" class="exit-btn" onclick="location.href='../loginScreen/Login.html'" >
 
-        <div class="dashboard-wrapper">
-            <div class="nav-tab" style="margin-top: 0; margin-bottom: 10px;">
-                <button class="nav-buttons" style="background:white; color:#7a0000;" >Dashboard</button>
+        <!-- Logo & Logout — absolutely pinned to corners, same as reservation screen -->
+        <img src="../../images/wildStarLogo.png" class="logo">
+        <img src="../../images/iconLogout.png" class="exit-btn" onclick="location.href='../loginScreen/Login.html'">
+
+        <!-- Center column: nav tabs + card -->
+        <div class="center-column">
+
+            <div class="nav-tab">
+                <button class="nav-buttons" style="background:white; color:#7a0000;">Dashboard</button>
                 <button class="nav-buttons" onclick="goToReservation()">Reserve</button>
             </div>
 
-            <!-- ==============================================
-                 DASHBOARD CARD
-            =============================================== -->
             <div class="dashboard-card">
-
-                <!-- ==========================================
-                     SEARCH
-                =========================================== -->
-                <div class="search-container">
-                    <input
-                        type="text"
-                        class="search-bar"
-                        id="historySearch"
-                        placeholder="Search history..."
-                        onkeyup="filterHistory()"
-                    >
-                </div>
-
-                <!-- ==========================================
-                     ACTIVE RESERVATION
-                =========================================== -->
+                <input type="text" class="search-bar" id="historySearch" placeholder="Search history..." onkeyup="filterHistory()">
 
                 <label class="section-label">Ongoing Reservation</label>
                 <div id="activeResContainer"></div>
 
-                <!-- ==========================================
-                     HISTORY TABLE
-                =========================================== -->
                 <label class="section-label">Reservation History</label>
-
                 <div class="history-container">
-                    <table class="history-table">
-                        <tbody id="historyBody"></tbody>
-                    </table>
+                    <table class="history-table"><tbody id="historyBody"></tbody></table>
                 </div>
 
-                <!-- ==========================================
-                     PAGINATION
-                =========================================== -->
                 <div id="paginationContainer" class="pagination"></div>
-
-                <!-- ==========================================
-                     ELIGIBILITY ERROR
-                =========================================== -->
-                <div
-                    id="eligibilityError"
-                    style="
-                        color: #ffcfcf;
-                        font-size: 13px;
-                        text-align: center;
-                        margin-top: 10px;
-                        font-weight: bold;
-                        min-height: 20px;
-                    "
-                ></div>
-
+                <div id="eligibilityError" style="color: #ffcfcf; text-align: center; font-weight: bold;"></div>
             </div>
+
         </div>
+
+        <div id="actionStatus" class="action-status"></div>
+
     </div>
 
-
-    <!-- ======================================================
-         MODAL
-    ======================================================= -->
+    <!-- Modal -->
     <div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
         <div class="modal-card" onclick="event.stopPropagation()">
-            <h2
-                style="
-                    color: #7a0000;
-                    margin-bottom: 25px;
-                    border-bottom: 2px solid #ffb300;
-                    padding-bottom: 10px;
-                "
-            >
-                RESERVATION DETAILS
-            </h2>
-
-            <div id="modalContent" class="modal-grid"></div>
-
-            <button
-                class="main-res-btn"
-                style="
-                    height: 50px;
-                    font-size: 16px;
-                    width: 100%;
-                    border-radius: 10px;
-                "
-                onclick="closeModal()"
-            >
-                Close</button>
-
+            <h2 style="color: #7a0000;">RESERVATION DETAILS</h2>
+            <div id="modalContent"></div>
+            <button onclick="closeModal()">Close</button>
         </div>
     </div>
 
-
-    <!-- ======================================================
-         JAVASCRIPT
-    ======================================================= -->
     <script>
         let canReserve = true;
         let isBlocked = false;
         let blockedUntil = null;
 
-        function formatDateTime(date) {
-            return new Date(date).toLocaleString();
+        function showStatus(message, isError = false) {
+            const status = document.getElementById("actionStatus");
+            status.textContent = message;
+            status.style.color = isError ? "#ffb3b3" : "#ffd000";
+            setTimeout(() => { status.textContent = ""; }, 3000);
         }
 
-        function formatShortDate(date) {
-            return new Date(date).toLocaleDateString();
-        }
-
+        function formatDateTime(date) { return new Date(date).toLocaleString(); }
+        function formatShortDate(date) { return new Date(date).toLocaleDateString(); }
         function formatShortDateTime(date) {
-            return new Date(date).toLocaleString([], {
-                month: 'short',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            });
+            return new Date(date).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
         }
-        
-        /* ==================================================
-           DATA FETCHING
-        =================================================== */
+
         async function fetchDashboardData(page = 1) {
             try {
-                const response = await fetch(
-                    `../../php/get_user_dashboard.php?page=${page}`
-                );
+                const response = await fetch(`../../php/get_user_dashboard.php?page=${page}`);
                 const data = await response.json();
-
                 if (!data.success) return;
 
                 isBlocked = data.isBlocked;
                 blockedUntil = data.blockedUntil;
 
-                const activeContainer =
-                    document.getElementById('activeResContainer');
+                const activeContainer = document.getElementById('activeResContainer');
 
                 if (data.activeReservation) {
                     canReserve = false;
@@ -521,213 +172,81 @@
                     activeContainer.innerHTML = `
                         <div class="active-res-box" onclick='showDetails(${JSON.stringify(r)})'>
                             <div>
-                                <h2 style="color:#7a0000; font-size:24px;">
-                                    ${r.resourceName}
-                                </h2>
-                                <p style="color:#666; font-size:14px;">
-                                    ${r.areaName}
-                                </p>
+                                <h2 style="color:#7a0000; font-size:24px;">${r.resourceName}</h2>
+                                <p style="color:#666; font-size:14px;">${r.areaName}</p>
                             </div>
-                            <div style="text-align: right">
-                                <p style="font-size:16px; margin-bottom: 5px;">
-                                    <b>${formatShortDateTime(r.startTime)}</b>
-                                </p>
-                                <span
-                                    class="status-tag"
-                                    style="
-                                        background:#fff3cc;
-                                        color:#7a5500;
-                                        font-size: 11px;
-                                        padding: 6px 12px;
-                                    "
-                                >
-                                    ${r.status_type}
-                                </span>
+                            <div style="text-align:right">
+                                <p style="font-size:16px; margin-bottom:5px;"><b>${formatShortDateTime(r.startTime)}</b></p>
+                                <span style="background:#fff3cc; color:#7a5500; font-size:11px; padding:6px 12px;">${r.status_type}</span>
                             </div>
                         </div>`;
                 } else {
                     canReserve = true;
-                    activeContainer.innerHTML = `
-                        <div class="active-res-box empty">
-                            No pending or active reservations.
-                        </div>
-                    `;
+                    activeContainer.innerHTML = `<div class="active-res-box">No pending or active reservations.</div>`;
                 }
 
-                // ==========================================
-                // Reservation History
-                // ==========================================
-                const historyBody =
-                    document.getElementById('historyBody');
-
-                historyBody.innerHTML = data.history.map(r => `
+                document.getElementById('historyBody').innerHTML = data.history.map(r => `
                     <tr onclick='showDetails(${JSON.stringify(r)})'>
-                        <td>
-                            <b>${r.resourceName}</b><br>
-                            <small>${r.areaName}</small>
-                        </td>
-                        <td style="text-align:right">
-                            ${formatShortDate(r.startTime)}<br>
-                            <span class="status-tag ${r.status_type.toUpperCase()}">
-                                ${r.status_type}
-                            </span>
-                        </td>
+                        <td><b>${r.resourceName}</b><br><small>${r.areaName}</small></td>
+                        <td style="text-align:right">${formatShortDate(r.startTime)}<br>${r.status_type}</td>
                     </tr>`).join('');
 
-
-                // ==========================================
-                // Pagination
-                // ==========================================
-                renderPagination(
-                    data.currentPage,
-                    data.totalPages
-                );
-
+                renderPagination(data.currentPage, data.totalPages);
                 document.getElementById('eligibilityError').textContent = "";
-            }
-
-            catch (error) {
-                console.error(error);
-            }
+            } catch (error) { console.error(error); }
         }
 
-        /* ==================================================
-           NAVIGATION
-        =================================================== */
         function goToReservation() {
-            const errorDiv =
-                document.getElementById('eligibilityError');
-
+            const errorDiv = document.getElementById('eligibilityError');
             if (isBlocked) {
-                errorDiv.textContent =
-                    "Unable to reserve. Your account is blocked until "
-                    + formatDateTime(blockedUntil);
-                errorDiv.style.color = "#ffcfcf";
-                setTimeout(() => { errorDiv.textContent = "";}, 1500);
+                errorDiv.textContent = "Unable to reserve. Your account is blocked until " + formatDateTime(blockedUntil);
+                setTimeout(() => { errorDiv.textContent = ""; }, 1500);
                 return;
             }
-
-
-            // ==============================================
-            // Ongoing Reservation
-            // ==============================================
             if (!canReserve) {
-                errorDiv.textContent =
-                    "Unable to reserve. You have an ongoing reservation.";
-                errorDiv.style.color = "#ffcfcf";
-                setTimeout(() => { errorDiv.textContent = "";}, 1500);
+                errorDiv.textContent = "Unable to reserve. You have an ongoing reservation.";
+                setTimeout(() => { errorDiv.textContent = ""; }, 1500);
                 return;
             }
-
-            window.location.href =
-                "../reservationScreen/reservationScreen.html";
+            window.location.href = "../reservationScreen/reservationScreen.html";
         }
 
         function renderPagination(current, total) {
-            const container =
-                document.getElementById('paginationContainer');
+            const container = document.getElementById('paginationContainer');
             container.innerHTML = '';
-
             if (total <= 1) return;
-
             for (let i = 1; i <= total; i++) {
                 const btn = document.createElement('button');
                 btn.textContent = i;
-                btn.className =
-                    `page-btn ${i === current ? 'active' : ''}`;
+                btn.className = `page-btn ${i === current ? 'active' : ''}`;
                 btn.onclick = () => fetchDashboardData(i);
                 container.appendChild(btn);
             }
         }
 
-        /* ==================================================
-           MODAL
-        =================================================== */
         function showDetails(r) {
             document.getElementById('modalContent').innerHTML = `
-                <div class="modal-item">
-                    <b>Reservation ID</b>
-                    <p>#${r.reservationID}</p>
-                </div>
-
-                <div class="modal-item">
-                    <b>Status</b>
-                    <p>${r.status_type}</p>
-                </div>
-
-                <div class="modal-item">
-                    <b>Resource Name</b>
-                    <p>${r.resourceName}</p>
-                </div>
-
-                <div class="modal-item">
-                    <b>Study Area</b>
-                    <p>${r.areaName}</p>
-                </div>
-
-                <div class="modal-item">
-                    <b>Starts At</b>
-                    <p>${formatDateTime(r.startTime)}</p>
-                </div>
-
-                <div class="modal-item">
-                    <b>Ends At</b>
-                    <p>${formatDateTime(r.endTime)}</p>
-                </div>
-
-                <div
-                    class="modal-item"
-                    style="grid-column: span 2;"
-                >
-                    <b>Purpose</b>
-
-                    <div class="purpose-detail-box">
-                        <p>
-                            ${r.purpose || 'No purpose provided.'}
-                        </p>
-                    </div>
-                </div>
-
-                <div class="modal-item">
-                    <b>Participants</b>
-                    <p>${r.num_participants} person(s)</p>
-                </div>`;
-
-            document.getElementById(
-                'modalOverlay'
-            ).style.display = 'flex';
+                <div><b>Reservation ID</b><p>#${r.reservationID}</p></div>
+                <div><b>Status</b><p>${r.status_type}</p></div>
+                <div><b>Resource Name</b><p>${r.resourceName}</p></div>
+                <div><b>Study Area</b><p>${r.areaName}</p></div>
+                <div><b>Starts At</b><p>${formatDateTime(r.startTime)}</p></div>
+                <div><b>Ends At</b><p>${formatDateTime(r.endTime)}</p></div>
+                <div><b>Purpose</b><p>${r.purpose || 'No purpose provided.'}</p></div>
+                <div><b>Participants</b><p>${r.num_participants} person(s)</p></div>`;
+            document.getElementById('modalOverlay').style.display = 'flex';
         }
 
-        function closeModal() {
-            document.getElementById(
-                'modalOverlay'
-            ).style.display = 'none';
-        }
+        function closeModal() { document.getElementById('modalOverlay').style.display = 'none'; }
 
-        /* ==================================================
-           SEARCH / FILTER
-        =================================================== */
         function filterHistory() {
-            const value =
-                document.getElementById('historySearch')
-                .value
-                .toLowerCase();
-
-            document
-                .querySelectorAll('#historyBody tr')
-                .forEach(row => {
-                    row.style.display =
-                        row.innerText.toLowerCase().includes(value)
-                            ? ''
-                            : 'none';
-                });
+            const value = document.getElementById('historySearch').value.toLowerCase();
+            document.querySelectorAll('#historyBody tr').forEach(row => {
+                row.style.display = row.innerText.toLowerCase().includes(value) ? '' : 'none';
+            });
         }
 
-        document.addEventListener(
-            'DOMContentLoaded',
-            () => fetchDashboardData(1)
-        );
-
+        document.addEventListener('DOMContentLoaded', () => fetchDashboardData(1));
     </script>
 </body>
 </html>
