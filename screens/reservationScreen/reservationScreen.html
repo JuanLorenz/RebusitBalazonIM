@@ -71,7 +71,7 @@
     </style>
 </head>
 
-<body style="background: linear-gradient(rgba(145,49,49,0.55), rgba(145,49,49,0.55)), url('../../images/backgroundGlobal.png');">
+<body style="background: linear-gradient(rgba(145,49,49,0.55), rgba(145,49,49,0.55)), url('../../images/backgroundGlobal.png'); background-size: cover; background-position: center;">
 
     <div class="overlay">
         
@@ -157,7 +157,7 @@
                     
                     <div class="id-scroll-window" id="idScrollWindow">
                         <!-- Default placeholder -->
-                        <p style="color: #ccc; font-size: 12px; text-align: center; margin-top: 20px;">
+                        <p style="color: #ccc; font-size: 12px; text-align: center;">
                             Select a sub-area to see participants.
                         </p>
                     </div>
@@ -184,7 +184,7 @@
         });
 
         function filterPastTimeSlots() {
-            const now = new Date(2026, 4, 17, 19, 15, 0, 0);
+            const now = new Date();
             const currentHour = now.getHours();
 
             const timeInSelect = document.getElementById('timeIn');
