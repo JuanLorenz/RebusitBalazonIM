@@ -369,7 +369,6 @@
             const result = await res.json();
             
             if(result.success) {
-                alert("Reservation successful!");
                 location.href = "../userDashboardScreen/userDashboardScreen.html";
             } else {
                 alert(result.message);
